@@ -1,0 +1,290 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="FoodReceipesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="FeedBack">
+          <Key>
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="Name" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="Msg" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Logged">
+          <Key>
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="30" />
+          <Property Name="Vnb" Type="varchar" MaxLength="50" />
+          <Property Name="Sname" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Login">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="20" />
+          <Property Name="Email" Type="nvarchar" MaxLength="40" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" />
+          <Property Name="RoleID" Type="int" Nullable="false" />
+          <Property Name="PhotoName" Type="nvarchar" MaxLength="50" />
+          <Property Name="DOB" Type="datetime" />
+          <Property Name="Gender" Type="varchar" MaxLength="50" />
+          <Property Name="Profession" Type="varchar" MaxLength="30" />
+          <Property Name="City" Type="varchar" MaxLength="20" />
+          <Property Name="ProfilePhoto" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Receipe">
+          <Key>
+            <PropertyRef Name="RId" />
+          </Key>
+          <Property Name="RId" Type="int" Nullable="false" />
+          <Property Name="RName" Type="varchar" MaxLength="50" />
+          <Property Name="Photo" Type="varchar" MaxLength="100" />
+          <Property Name="Youtube" Type="varchar" MaxLength="100" />
+          <Property Name="Ingredient" Type="varchar" MaxLength="250" />
+          <Property Name="HTM" Type="varchar" MaxLength="50" />
+          <Property Name="VNB" Type="varchar" MaxLength="50" />
+          <Property Name="RoleId" Type="int" />
+          <Property Name="State" Type="varchar" MaxLength="30" />
+          <Property Name="UserId" Type="int" />
+        </EntityType>
+        <EntityType Name="State">
+          <Key>
+            <PropertyRef Name="Sname" />
+          </Key>
+          <Property Name="Sname" Type="varchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Receipe__State__628FA481">
+          <End Role="State" Type="Self.State" Multiplicity="0..1" />
+          <End Role="Receipe" Type="Self.Receipe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="State">
+              <PropertyRef Name="Sname" />
+            </Principal>
+            <Dependent Role="Receipe">
+              <PropertyRef Name="State" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Receipe__UserId__46E78A0C">
+          <End Role="Login" Type="Self.Login" Multiplicity="0..1" />
+          <End Role="Receipe" Type="Self.Receipe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Login">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Receipe">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FoodReceipesModelStoreContainer">
+          <EntitySet Name="FeedBack" EntityType="Self.FeedBack" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Logged" EntityType="Self.Logged" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Login" EntityType="Self.Login" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Receipe" EntityType="Self.Receipe" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="State" EntityType="Self.State" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Receipe__State__628FA481" Association="Self.FK__Receipe__State__628FA481">
+            <End Role="State" EntitySet="State" />
+            <End Role="Receipe" EntitySet="Receipe" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Receipe__UserId__46E78A0C" Association="Self.FK__Receipe__UserId__46E78A0C">
+            <End Role="Login" EntitySet="Login" />
+            <End Role="Receipe" EntitySet="Receipe" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FoodReceipesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Login">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RoleID" Type="Int32" Nullable="false" />
+          <Property Name="PhotoName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DOB" Type="DateTime" Precision="3" />
+          <Property Name="Gender" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Profession" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ProfilePhoto" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Receipes" Relationship="FoodReceipesModel.FK__Receipe__UserId__46E78A0C" FromRole="Login" ToRole="Receipe" />
+        </EntityType>
+        <EntityContainer Name="FoodReceipesEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Logins" EntityType="Self.Login" />
+          <EntitySet Name="Receipes" EntityType="FoodReceipesModel.Receipe" />
+          <AssociationSet Name="FK__Receipe__UserId__46E78A0C" Association="FoodReceipesModel.FK__Receipe__UserId__46E78A0C">
+            <End Role="Login" EntitySet="Logins" />
+            <End Role="Receipe" EntitySet="Receipes" />
+          </AssociationSet>
+          <EntitySet Name="FeedBacks" EntityType="FoodReceipesModel.FeedBack" />
+          <EntitySet Name="States" EntityType="FoodReceipesModel.State" />
+          <AssociationSet Name="FK__Receipe__State__628FA481" Association="FoodReceipesModel.FK__Receipe__State__628FA481">
+            <End Role="State" EntitySet="States" />
+            <End Role="Receipe" EntitySet="Receipes" />
+          </AssociationSet>
+          <EntitySet Name="Loggeds" EntityType="FoodReceipesModel.Logged" />
+        </EntityContainer>
+        <EntityType Name="Receipe">
+          <Key>
+            <PropertyRef Name="RId" />
+          </Key>
+          <Property Name="RId" Type="Int32" Nullable="false" />
+          <Property Name="RName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Photo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Youtube" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Ingredient" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="HTM" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="VNB" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RoleId" Type="Int32" />
+          <Property Name="State" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="UserId" Type="Int32" />
+          <NavigationProperty Name="Login" Relationship="FoodReceipesModel.FK__Receipe__UserId__46E78A0C" FromRole="Receipe" ToRole="Login" />
+          <NavigationProperty Name="State1" Relationship="FoodReceipesModel.FK__Receipe__State__628FA481" FromRole="Receipe" ToRole="State" />
+        </EntityType>
+        <Association Name="FK__Receipe__UserId__46E78A0C">
+          <End Type="FoodReceipesModel.Login" Role="Login" Multiplicity="0..1" />
+          <End Type="FoodReceipesModel.Receipe" Role="Receipe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Login">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Receipe">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="FeedBack">
+          <Key>
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Msg" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="State">
+          <Key>
+            <PropertyRef Name="Sname" />
+          </Key>
+          <Property Name="Sname" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Receipes" Relationship="FoodReceipesModel.FK__Receipe__State__628FA481" FromRole="State" ToRole="Receipe" />
+        </EntityType>
+        <Association Name="FK__Receipe__State__628FA481">
+          <End Type="FoodReceipesModel.State" Role="State" Multiplicity="0..1" />
+          <End Type="FoodReceipesModel.Receipe" Role="Receipe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="State">
+              <PropertyRef Name="Sname" />
+            </Principal>
+            <Dependent Role="Receipe">
+              <PropertyRef Name="State" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Logged">
+          <Key>
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Vnb" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Sname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FoodReceipesModelStoreContainer" CdmEntityContainer="FoodReceipesEntities">
+          <EntitySetMapping Name="Logins">
+            <EntityTypeMapping TypeName="FoodReceipesModel.Login">
+              <MappingFragment StoreEntitySet="Login">
+                <ScalarProperty Name="ProfilePhoto" ColumnName="ProfilePhoto" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Profession" ColumnName="Profession" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="PhotoName" ColumnName="PhotoName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Receipes">
+            <EntityTypeMapping TypeName="FoodReceipesModel.Receipe">
+              <MappingFragment StoreEntitySet="Receipe">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="VNB" ColumnName="VNB" />
+                <ScalarProperty Name="HTM" ColumnName="HTM" />
+                <ScalarProperty Name="Ingredient" ColumnName="Ingredient" />
+                <ScalarProperty Name="Youtube" ColumnName="Youtube" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="RName" ColumnName="RName" />
+                <ScalarProperty Name="RId" ColumnName="RId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FeedBacks">
+            <EntityTypeMapping TypeName="FoodReceipesModel.FeedBack">
+              <MappingFragment StoreEntitySet="FeedBack">
+                <ScalarProperty Name="Msg" ColumnName="Msg" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="States">
+            <EntityTypeMapping TypeName="FoodReceipesModel.State">
+              <MappingFragment StoreEntitySet="State">
+                <ScalarProperty Name="Sname" ColumnName="Sname" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Loggeds">
+            <EntityTypeMapping TypeName="FoodReceipesModel.Logged">
+              <MappingFragment StoreEntitySet="Logged">
+                <ScalarProperty Name="Sname" ColumnName="Sname" />
+                <ScalarProperty Name="Vnb" ColumnName="Vnb" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
