@@ -1,23 +1,15 @@
-﻿using DAL_Lib;
-using Microsoft.Extensions.Hosting.Internal;
+﻿using Cooking_App.Models;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Web;
-using System.Web.Helpers;
-using System.Web.Hosting;
 using System.Web.Mvc;
-using System.Web.Razor.Generator;
-using System.Xml.Linq;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Net.WebRequestMethods;
 
-namespace Whats_Cooking.Controllers
+namespace Cooking_App.Controllers
 {
     public class MainController : Controller
     {
+        // GET: Main
         ReceipeMethods methods = null;
         LoginMethods lmethods = null;
         public MainController()
@@ -308,5 +300,4 @@ namespace Whats_Cooking.Controllers
             }
         }
     }
- }
-
+}
