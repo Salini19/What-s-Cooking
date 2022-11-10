@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -22,7 +24,7 @@ namespace DAL_Lib
         }
         public int Insert(Receipe m)
         {
-            int res = 0;
+           
             try
             {
                 food.Receipes.Add(m);
@@ -57,31 +59,13 @@ namespace DAL_Lib
             return receipe;
         }
 
-        //public List<State> GetAllState(string vnb)
-        //{
-        //    List<State> list = new List<State>();
-        //    string str = "select distinct SName from Receipe where VNB=@vnb";
-        //    cmd = new SqlCommand(str, con);
-        //    con.Open();
-        //    cmd.Parameters.AddWithValue("@vnb", vnb);
-        //    dr = cmd.ExecuteReader();
-        //    if (dr.HasRows)
-        //    {
-        //        while (dr.Read())
-        //        {
-        //            State p = new State();
-        //            p.Sname = dr["SName"].ToString();
-        //            list.Add(p);
-        //        }
-        //        con.Close();
-        //        return list;
-        //    }
-        //    else
-        //    {
-        //        con.Close();
-        //        return list;
-        //    }
-        //}
+        public List<String> GetAllState(string vnb)
+        {
+            
+            List<string> list= food.Receipes.Where(x => x.VNB == vnb).Select(m => m.State).Distinct().ToList();
+
+            return list;
+        }
         public List<Receipe> GetBeverageList(string vnb)
         {
             var list = food.Receipes.ToList();
@@ -116,40 +100,60 @@ namespace DAL_Lib
             }
 
         }
-        //public int Update(Menu m)
-        //{
-        //    string str = "update Receipe set Rname=@rname,Image=@image,Youtube=@youtube,Ingredient=@ingredient,HTM=@htm,VNB=@vnb,SName=@sname where Rid=@id";
-        //    cmd = new SqlCommand(str, con);
-        //    con.Open();
-        //    cmd.Parameters.AddWithValue("@rname", m.RName);
-        //    cmd.Parameters.AddWithValue("@image", m.Photo);
-        //    cmd.Parameters.AddWithValue("@youtube", m.Youtube);
-        //    cmd.Parameters.AddWithValue("@ingredient", m.Ingredient);
-        //    cmd.Parameters.AddWithValue("@htm", m.HTM);
-        //    cmd.Parameters.AddWithValue("@vnb", m.VNB);
-        //    cmd.Parameters.AddWithValue("@sname", m.State);
-        //    cmd.Parameters.AddWithValue("@id", m.RId);
-        //    int res = cmd.ExecuteNonQuery();
-        //    con.Close();
-        //    return res;
-        //}
-        //public int UpdateWOPhoto(Menu m)
-        //{
-        //    string str = "update Receipe set Rname=@rname,Youtube=@youtube,Ingredient=@ingredient,HTM=@htm,VNB=@vnb,SName=@sname where Rid=@id";
-        //    cmd = new SqlCommand(str, con);
-        //    con.Open();
-        //    cmd.Parameters.AddWithValue("@rname", m.RName);
-        //    cmd.Parameters.AddWithValue("@youtube", m.Youtube);
-        //    cmd.Parameters.AddWithValue("@ingredient", m.Ingredient);
-        //    cmd.Parameters.AddWithValue("@htm", m.HTM);
-        //    cmd.Parameters.AddWithValue("@vnb", m.VNB);
-        //    cmd.Parameters.AddWithValue("@sname", m.State);
-        //    cmd.Parameters.AddWithValue("@id", m.RId);
-        //    int res = cmd.ExecuteNonQuery();
-        //    con.Close();
-        //    return res;
-        //}
+        public int Update(Receipe m)
+        {
+            try
+            {
+                var list = food.Receipes.ToList();
+                Receipe found = list.Find(x => x.RId == m.RId);
+                found.RId = m.RId;
+                found.RName = m.RName;
+                found.Youtube = m.Youtube;
+                found.Ingredient = m.Ingredient;
+                found.HTM = m.HTM;
+                found.Photo = m.Photo;
+                found.VNB = m.VNB;
+                found.State = m.State;
 
+                food.SaveChanges();
+                return 1;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }    
+        }
+        public int UpdateWOPhoto(Receipe m)
+        {
+            try
+            {
+                var list = food.Receipes.ToList();
+                Receipe found = list.Find(x => x.RId == m.RId);
+                found.RId = m.RId;
+                found.RName = m.RName;
+                found.Youtube = m.Youtube;
+                found.Ingredient = m.Ingredient;
+                found.HTM = m.HTM;
+                found.VNB = m.VNB;
+                found.State = m.State;
+
+                food.SaveChanges();
+                return 1;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public Login GetInfoProfile(int id)
+        {
+            var List=food.Logins.ToList();
+            Login l= List.Find(x => x.Id == id);
+            return l;
+        }
         //public Profile GetInfoProfile(int id)
         //{
         //    Profile m = new Profile();
@@ -178,6 +182,33 @@ namespace DAL_Lib
         //    }
         //    return m;
         //}
+        public int UpdateProfilePhoto(Login l)
+        {
+            try
+            {
+                var list = food.Logins.ToList();
+                Login found = list.Find(x => x.Id == l.Id);
+                found.Id = l.Id;
+                found.Email = l.Email;
+                found.Password = l.Password;
+                found.Profession = l.Profession;
+                found.City = l.City;
+                found.DOB = l.DOB;
+                found.PhotoName = l.PhotoName;
+                found.UserName = l.UserName;
+                found.Gender = l.Gender;
+
+                food.SaveChanges();
+
+                return 1;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
+        }
         //public int UpdateProfilePhoto(Profile p)
         //{
         //    string str = "update Login set Username=@username,Email=@email,Password=@pass,Profession=@profession,City=@city,DOB=@dob,ProfilePhoto=@pname,Gender=@gender where Id=@id";
@@ -196,6 +227,32 @@ namespace DAL_Lib
         //    con.Close();
         //    return res;
         //}
+        public int UpdateProfile(Login l)
+        {
+            try
+            {
+                var list = food.Logins.ToList();
+                Login found = list.Find(x => x.Id == l.Id);
+                found.Id = l.Id;
+                found.Email = l.Email;
+                found.Password = l.Password;
+                found.Profession = l.Profession;
+                found.City = l.City;
+                found.DOB = l.DOB;
+                found.UserName = l.UserName;
+                found.Gender = l.Gender;
+
+                food.SaveChanges();
+
+                return 1;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
         //public int UpdateProfile(Profile p)
         //{
         //    string str = "update Login set Username=@username,Email=@email,Password=@pass,Profession=@profession,City=@city,DOB=@dob,Gender=@gender where Id=@id";

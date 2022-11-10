@@ -40,30 +40,10 @@ namespace DAL_Lib
         public List<FeedBack> FeedbackInfo()
         {
             var list = food.FeedBacks.ToList();
-            List<FeedBack> list1 = (List<FeedBack>)list.GroupBy(x => x.Name).Take(3);
-            return list1;
+            return list;
             //= new List<FeedBack>();
             //string str = "select Top 3 * from Feedback order by Fid desc";
-            //cmd = new SqlCommand(str, con);
-            //con.Open();
-            //dr = cmd.ExecuteReader();
-            //if (dr.HasRows)
-            //{
-            //    while (dr.Read())
-            //    {
-            //        Feedback f = new Feedback();
-            //        f.Name = dr["Name"].ToString();
-            //        f.Msg = dr["Message"].ToString();
-            //        list.Add(f);
-            //    }
-            //    con.Close();
-            //    return list;
-            //}
-            //else
-            //{
-            //    con.Close();
-            //    return list;
-            //}
+            
         }
         public List<FeedBack> AllFeedbackInfo()
         {
@@ -183,11 +163,13 @@ namespace DAL_Lib
             try
             {
                 var list = food.Loggeds.ToList();
-                Logged l = list.Find(x => x.Name == Email);
+                Logged l = list.First(x => x.Name == Email);
                 if (l != null)
                 {
+                    
                     l.Name = Email;
                     l.Vnb = vnb;
+
                     food.SaveChanges();
                     res= 1;
                 }
@@ -206,51 +188,54 @@ namespace DAL_Lib
         }
         public int Temporarystate(string Email, string sname)
         {
-            string str = "update Logged set sname=@sname where Username=@email";
-            cmd = new SqlCommand(str, con);
-            con.Open();
-            cmd.Parameters.AddWithValue("@email", Email);
-            cmd.Parameters.AddWithValue("@sname", sname);
-            int res = cmd.ExecuteNonQuery();
-            con.Close();
+
+            int res = 0;
+            try
+            {
+                var list = food.Loggeds.ToList();
+                Logged l = list.First(x => x.Name == Email);
+                if (l != null)
+                {
+
+                    l.Name = Email;
+                    l.Sname = sname;
+
+                    food.SaveChanges();
+                    res = 1;
+                }
+
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
             return res;
+            
+           
         }
         public Logged TempName()
         {
-            Logged log = new Logged();
-            string str = "select * from Logged";
-            cmd = new SqlCommand(str, con);
-            con.Open();
-            dr = cmd.ExecuteReader();
-            if (dr.HasRows)
+          
+            try
             {
-                while (dr.Read())
-                {
-                    log.Name = dr["Username"].ToString();
-                    log.Password = dr["Password"].ToString();
-                    log.Sname = dr["sname"].ToString();
-                    log.Vnb = dr["vnb"].ToString();
-                }
-                con.Close();
-                return log;
+                return food.Loggeds.First();
             }
-            else
+            catch (Exception)
             {
-                con.Close();
-                return log;
+
+                throw;
             }
+
         }
 
         public void DeleteLogged()
         {
-            
-            string str = "delete from Logged";
-            cmd = new SqlCommand(str, con);
-            con.Open();
-            int res = cmd.ExecuteNonQuery();
-            con.Close();
+            food.Loggeds.RemoveRange(food.Loggeds);
+
         }
     }
 
 }
-}
+
