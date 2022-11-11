@@ -86,9 +86,9 @@
                             <li class="nav-link" style="color: #FDFEFE;font-size: 19px;">@Html.ActionLink("Beverage", "MainPage", "Main")</li>
 
                             @*<li class="nav-link" style="color: #FDFEFE;font-size: 19px;">@Html.ActionLink("Hey, @TempData[\"T1\"] !", "Profile", "Main")</li>*@
-                        <a class="nav-link" asp-area="" asp-controller="main" asp-action="profile">&nbsp;Hey, @TempData["T1"] !</a>
+                        <a class="nav-link" href="~/Main/Profile">&nbsp;Hey, @TempData["T1"] !</a>
 
-<li class="nav-link" style="color: #FDFEFE;font-size: 19px;">@Html.ActionLink("LogOut", "LogOut", "Main")</li>
+                            <li class="nav-link" style="color: #FDFEFE;font-size: 19px;">@Html.ActionLink("LogOut", "LogOut", "Main")</li>
 
 
                         </ul>

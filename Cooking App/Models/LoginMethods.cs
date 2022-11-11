@@ -259,7 +259,7 @@ namespace Cooking_App
 
         }
 
-        public int UpdateProfile(Login l)
+        public bool UpdateProfile(Login l)
         {
             try
             {
@@ -271,12 +271,13 @@ namespace Cooking_App
                 found.Profession = l.Profession;
                 found.City = l.City;
                 found.DOB = l.DOB;
+                found.MobileNumber = l.MobileNumber;
                 found.UserName = l.UserName;
                 found.Gender = l.Gender;
 
                 food.SaveChanges();
 
-                return 1;
+                return true;
             }
             catch (Exception)
             {

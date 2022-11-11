@@ -21,10 +21,6 @@ namespace Cooking_App.Models
         public string Ingredient { get; set; }
         public string HTM { get; set; }
         public string VNB { get; set; }
-        public Nullable<int> RoleId { get; set; }
         public string State { get; set; }
-        public Nullable<int> UserId { get; set; }
-    
-        public virtual Login Login { get; set; }
     }
 }

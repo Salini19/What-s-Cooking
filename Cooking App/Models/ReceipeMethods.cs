@@ -49,7 +49,7 @@ namespace Cooking_App
         public List<Receipe> GetAllProductsForModify(string sname, int id)
         {
             var list = food.Receipes.ToList();
-            List<Receipe> list1 = list.FindAll(x => x.State == sname && x.UserId == id);
+            List<Receipe> list1 = list.FindAll(x => x.State == sname);
             return list1;
         }
         public Receipe GetInfo(int id)
@@ -60,12 +60,24 @@ namespace Cooking_App
             return receipe;
         }
 
-        public List<String> GetAllState(string vnb)
+        public List<State> GetAllState(string vnb)
         {
-            
-            List<string> list= food.Receipes.Where(x => x.VNB == vnb).Select(m => m.State).Distinct().ToList();
+            List<String> list= food.Receipes.Where(x => x.VNB == vnb).Select(m => m.State).Distinct().ToList();
+            List<State> slist = new List<State>();
+            foreach (var item in list)
+            {
+                slist.Add(new State {Sname = item });
+            }
+            return slist;
 
-            return list;
+            //List<String> list= food.Receipes.Where(x => x.VNB == vnb).Select(m => m.State).Distinct().ToList();
+            //List<State> slist = new List<State>();
+            //foreach (list item in list)
+            //{
+
+            //    slist.Add(item.);
+            //}
+           
         }
         public List<Receipe> GetBeverageList(string vnb)
         {
@@ -79,7 +91,7 @@ namespace Cooking_App
         {
 
             var list = food.Receipes.ToList();
-            List<Receipe> list1 = list.FindAll(x => x.VNB == vnb && x.UserId == id);
+            List<Receipe> list1 = list.FindAll(x => x.VNB == vnb );
             return list1;
 
 

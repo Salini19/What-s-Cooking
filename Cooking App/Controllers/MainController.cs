@@ -9,6 +9,7 @@ using System.Web.Hosting;
 using System.Web.Mvc;
 using System.Web.Security;
 
+
 namespace Cooking_App.Controllers
 {
     public class MainController : Controller
@@ -106,17 +107,59 @@ namespace Cooking_App.Controllers
             FullName = fname;
             u.UserName = FullName;
             u.Email = form["email"];
+            u.DOB =Convert.ToDateTime( form["dob"]);
+            u.MobileNumber = Convert.ToDecimal(form["no"]);
             u.Password = form["password"];
+            string s = form["confirm password"];
             u.PhotoName = "Profile.jpg";
-
-            bool ans = lmethods.Save(u);
-            if (ans)
+            if (s == u.Password)
             {
-                return RedirectToAction("LoginPage");
+                bool ans = lmethods.Save(u);
+                if (ans)
+                {
+                    return RedirectToAction("LoginPage");
+                }
+
+
             }
-             
+            else
+            {
+                ViewBag.pass = "Confirm password and password should be same";
+                return View();
+            }
+           
+            
             return View();
         }
+        public ActionResult ForgotPassword()
+        {
+            TempData["M1"] = null;
+            lmethods.DeleteLogged();
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ForgotPassword(FormCollection form)
+        {
+            Login l = new Login();
+            l.Email = form["email"];
+            l.DOB = Convert.ToDateTime(form["date"]);
+            l.Password = form["password"];
+
+            int res = lmethods.ForgetPassword(l.Email, (DateTime)l.DOB, l.Password);
+            if (res == 1)
+            {
+                ViewBag.Msg1 = "Password Changed Sucessfully";
+                return View();
+            }
+            else
+            {
+                ViewBag.Msg2 = "Given input is not valid";
+                return View();
+            }
+          
+        }
+
         public ActionResult LogOut()
         {
             lmethods.DeleteLogged();
@@ -147,41 +190,8 @@ namespace Cooking_App.Controllers
             ViewBag.StateList = methods.GetAllState(id);
             return View();
         }
-        [HttpPost]
-        public ActionResult StateWiseMenu(Receipe imag, string ingredient, string htm, string choice1, string choice2)
-        {
-            Receipe m = new Receipe();
-            string uniqueFileName = null;
-            //if (imag.Photo != null)
-            //{
-            //    uniqueFileName = Guid.NewGuid().ToString() + "_" + imag.Photo.FileName;
-            //    string uploadsFolder = Path.Combine(Server.MapPath("~/Image"),uniqueFileName);
-            //    imag.Photo.CopyTo(new FileStream(uploadsFolder, FileMode.Create));
 
 
-            //}
-            string youtube = imag.Youtube;
-            youtube = youtube.Replace("watch?v=", "embed/");
-            imag.Youtube = youtube;
-            m.Youtube = youtube;
-            m.RName = imag.RName;       // RName = Recipe Name
-            m.HTM = imag.HTM;           // HTM = How to Make
-            m.Ingredient = ingredient;
-            m.Photo = uniqueFileName;
-            m.State = choice2;
-            m.VNB = choice1;            //VNB = Veg Non-Veg Beverage
-
-            Login u = new Login();
-            Logged l = lmethods.TempName();
-            u = lmethods.GetRole(l.Name, l.Password);
-            m.RoleId = u.RoleID;
-            m.UserId = u.Id;
-            int res = methods.Insert(m);
-            if (res == 1)
-                return RedirectToAction("StateWiseMenu");
-
-            return View();
-        }
         public ActionResult MainMenu(string id)
         {
             Login u = new Login();
@@ -199,39 +209,23 @@ namespace Cooking_App.Controllers
             return View();
         }
 
-        //[HttpPost]
-        //public ActionResult MainMenu(OnlineFoodReceipe.Models.Img imag, string ingredient, string htm, string choice1, string choice2)
-        //{
-        //    Menu m = new Menu();
-        //    string uniqueFileName = null;
-        //    if (imag.Photo != null)
-        //    {
-        //        string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "NewlyAddedImg");
-        //        uniqueFileName = Guid.NewGuid().ToString() + "_" + imag.Photo.FileName;
-        //        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-        //        imag.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
-        //    }
-        //    string youtube = imag.Youtube;
-        //    youtube = youtube.Replace("watch?v=", "embed/");
-        //    imag.Youtube = youtube;
-        //    m.Youtube = youtube;
-        //    m.RName = imag.RName;       //RName = Recipe Name
-        //    m.HTM = imag.HTM;           //HTM = How To Make
-        //    m.Ingredient = ingredient;
-        //    m.Photo = uniqueFileName;
-        //    m.State = choice2;
-        //    m.VNB = choice1;            //VNB = Veg Non-Veg Beverage
+        public ActionResult Info(int id)
+        {
+            Login u = new Login();
+            Logged l = lmethods.TempName();
+            u = lmethods.GetName(l.Name, l.Password);
+            TempData["T1"] = u.UserName;
 
-        //    Login u = new Login();
-        //    Logged l = db.TempName();
-        //    u = db.GetRole(l.Name, l.Password);
-        //    m.RoleId = u.RoleID;
-        //    m.UserId = u.Id;
-        //    int res = mdb.Insert(m);
-        //    if (res == 1)
-        //        return RedirectToAction("MainMenu");
-        //    return View();
-        //}
+            Receipe m = methods.GetInfo(id);
+            ViewBag.Rname = m.RName;    //RName = Recipe Name
+            ViewBag.Vnb = m.VNB;        //VNB = Veg Non-Veg Beverage
+            ViewBag.State = m.State;
+            ViewBag.Photo = m.Photo;
+            ViewBag.Youtube = m.Youtube;
+            ViewBag.Ingredient = m.Ingredient;
+            ViewBag.Htm = m.HTM;        //HTM = How To Make
+            return View();
+        }
 
 
         public ActionResult Delete(int id)
@@ -266,6 +260,7 @@ namespace Cooking_App.Controllers
             ViewBag.Email = p.Email;
             ViewBag.Password = p.Password;
             ViewBag.Gender = p.Gender;
+            ViewBag.Mobile = p.MobileNumber;
             ViewBag.Profession = p.Profession;
             ViewBag.City = p.City;
             ViewBag.DOB = p.DOB;        // Date Of Birth
@@ -276,43 +271,28 @@ namespace Cooking_App.Controllers
         public ActionResult Profile(FormCollection form)
         {
             Login l = new Login();
-            l.UserName = username;
-            l.Email = email;
-            l.Password = password;
-            string profe = profession != null ? profession : " ";
-            p.Profession = profe;
-            string d1 = dob != null ? dob : " ";    // dob = Date Of Birth
-            p.DOB = d1;
-            string c1 = city != null ? city : " ";
-            p.City = c1;
-            string gen = gender != null ? gender : " ";
-            p.Gender = gen;
-            p.Id = id;
-            if (pro.ProfilePhoto == null)
+            l.UserName = form["username"];
+            l.Id = (int)ViewBag.ID;
+            l.Email = form["email"];
+            l.Password =form ["password"];
+            //string profe = profession != null ? profession : " ";
+            l.Profession = form["profession"];
+            l.DOB = Convert.ToDateTime(form["dob"]);
+            l.MobileNumber =Convert.ToDecimal(form["no"]);
+            l.City = form["city"];
+            l.Gender = form["gender"];
+            l.PhotoName = form["Photoname"];
+            bool ans= lmethods.UpdateProfile(l);
+            if (ans)
             {
-                if (remove != null)
-                {
-                    p.PhotoName = "Profile.jpg";
-                    int res = mdb.UpdateProfilePhoto(p);
-                    if (res == 1)
-                        return RedirectToAction("Profile");
-                }
-                else
-                {
-                    int res = mdb.UpdateProfile(p);
-                    if (res == 1)
-                        return RedirectToAction("Profile");
-                }
+                ViewBag.profile = "Profile Updated Successfully";
+                
             }
-            else
-            {
-                p.PhotoName = uniqueFileName;
-                int res = mdb.UpdateProfilePhoto(p);
-                if (res == 1)
-                    return RedirectToAction("Profile");
-            }
+             
+           
             return View();
         }
 
+       
     }
 }

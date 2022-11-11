@@ -73,6 +73,22 @@
                         <div class="row" style="padding:10x">
                             <table class="table table-borderless">
                                 <tr>
+                                    <td>&nbsp;</td>
+                                    <td>
+                                        <span style="color: #21618C;font-weight:600;">DOB</span>
+                                        <input type="date" id="dob" name="dob" class="form-control" placeholder="yyyy-mm-dd" required />
+                                    </td>
+                                    <td>
+                                        <span style="color: #21618C;font-weight:600;">Mobile Number</span>
+                                        <input type="number" maxlength="10" id="no" name="no" class="form-control" placeholder="1234567890" required />
+                                    </td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="row" style="padding:10x">
+                            <table class="table table-borderless">
+                                <tr>
                                     <td style="padding-left: 30px;">
                                         <span style="color: #21618C;font-weight:600;">Email</span>
                                         <input type="email" id="email" name="email" class="form-control" placeholder="example@gmail.com" required />
@@ -87,25 +103,26 @@
 
                                     <td style="padding-left: 30px;">
                                         <span style="color: #21618C;font-weight:600;">Password</span>
-                                        <input type="password" id="password" name="password" class="form-control" required />
+                                        <input type="password" id="password" name="password" class="form-control" placeholder="Enter the password" required />
                                     </td>
                                     <td>&nbsp;</td>
                                 </tr>
                             </table>
                         </div>
-                        @*<div class="row" style="padding:10x">
+                        <div class="row" style="padding:10x">
                             <table class="table table-borderless">
                                 <tr>
 
                                     <td style="padding-left: 30px;">
                                         <span style="color: #21618C;font-weight:600;"> Confirm Password</span>
-                                        <input type="password" id="confirm password" name="Confirm password" class="form-control" required />
-                                       
+                                        <input type="password" id="confirm password" name="Confirm password" class="form-control" placeholder="Re-Enter the password" required />
+                                        <label style="color:red"> @ViewBag.pass</label>
+
                                     </td>
                                     <td>&nbsp;</td>
                                 </tr>
                             </table>
-                        </div>*@
+                        </div>
                         <div class="row" style="">
                             <table class="table table-borderless">
                                 <tr>
@@ -136,12 +153,14 @@
                 </div>
             </div>
         </div>
-        @*</div>*@
-        @*@{Html.EndForm();}*@
+    }
+        @if (ViewBag.pass != null)
+        {
+            <script type="text/javascript">alert("Confirm password and password should be same");</script>
+        }
 
         <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
-    }
-    </body>
+
+</body>
 </html>
 

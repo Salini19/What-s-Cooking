@@ -37,43 +37,26 @@
           <Property Name="Profession" Type="varchar" MaxLength="30" />
           <Property Name="City" Type="varchar" MaxLength="20" />
           <Property Name="ProfilePhoto" Type="nvarchar(max)" />
+          <Property Name="MobileNumber" Type="numeric" Precision="10" Scale="0" />
         </EntityType>
         <EntityType Name="Receipe">
           <Key>
             <PropertyRef Name="RId" />
           </Key>
-          <Property Name="RId" Type="int" Nullable="false" />
+          <Property Name="RId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="RName" Type="varchar" MaxLength="50" />
-          <Property Name="Photo" Type="varchar" MaxLength="100" />
-          <Property Name="Youtube" Type="varchar" MaxLength="100" />
-          <Property Name="Ingredient" Type="varchar" MaxLength="250" />
-          <Property Name="HTM" Type="varchar" MaxLength="50" />
-          <Property Name="VNB" Type="varchar" MaxLength="50" />
-          <Property Name="RoleId" Type="int" />
+          <Property Name="Photo" Type="nvarchar" MaxLength="200" />
+          <Property Name="Youtube" Type="nvarchar" MaxLength="340" />
+          <Property Name="Ingredient" Type="nvarchar(max)" />
+          <Property Name="HTM" Type="nvarchar(max)" />
+          <Property Name="VNB" Type="nvarchar" MaxLength="50" />
           <Property Name="State" Type="varchar" MaxLength="30" />
-          <Property Name="UserId" Type="int" />
         </EntityType>
-        <Association Name="FK__Receipe__UserId__46E78A0C">
-          <End Role="Login" Type="Self.Login" Multiplicity="0..1" />
-          <End Role="Receipe" Type="Self.Receipe" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Login">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Receipe">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="FoodReceipesModelStoreContainer">
           <EntitySet Name="FeedBack" EntityType="Self.FeedBack" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Logged" EntityType="Self.Logged" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Login" EntityType="Self.Login" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Receipe" EntityType="Self.Receipe" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Receipe__UserId__46E78A0C" Association="Self.FK__Receipe__UserId__46E78A0C">
-            <End Role="Login" EntitySet="Login" />
-            <End Role="Receipe" EntitySet="Receipe" />
-          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -104,14 +87,14 @@
           <Property Name="UserName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Email" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="RoleID" Type="Int32" Nullable="false" />
+          <Property Name="RoleID" Nullable="false" Type="Int32" />
           <Property Name="PhotoName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="DOB" Type="DateTime" Precision="3" />
           <Property Name="Gender" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Profession" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="City" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="ProfilePhoto" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Receipes" Relationship="Self.FK__Receipe__UserId__46E78A0C" FromRole="Login" ToRole="Receipe" />
+          <Property Name="MobileNumber" Type="Decimal" Precision="10" Scale="0" />
         </EntityType>
         <EntityType Name="Receipe">
           <Key>
@@ -119,37 +102,18 @@
           </Key>
           <Property Name="RId" Type="Int32" Nullable="false" />
           <Property Name="RName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Photo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Youtube" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Ingredient" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="HTM" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="VNB" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="RoleId" Type="Int32" />
+          <Property Name="Photo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Youtube" Type="String" MaxLength="340" FixedLength="false" Unicode="true" />
+          <Property Name="Ingredient" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="HTM" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="VNB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="State" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="UserId" Type="Int32" />
-          <NavigationProperty Name="Login" Relationship="Self.FK__Receipe__UserId__46E78A0C" FromRole="Receipe" ToRole="Login" />
         </EntityType>
-        <Association Name="FK__Receipe__UserId__46E78A0C">
-          <End Role="Login" Type="Self.Login" Multiplicity="0..1" />
-          <End Role="Receipe" Type="Self.Receipe" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Login">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Receipe">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="FoodReceipesEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="FeedBacks" EntityType="Self.FeedBack" />
           <EntitySet Name="Loggeds" EntityType="Self.Logged" />
           <EntitySet Name="Logins" EntityType="Self.Login" />
           <EntitySet Name="Receipes" EntityType="Self.Receipe" />
-          <AssociationSet Name="FK__Receipe__UserId__46E78A0C" Association="Self.FK__Receipe__UserId__46E78A0C">
-            <End Role="Login" EntitySet="Logins" />
-            <End Role="Receipe" EntitySet="Receipes" />
-          </AssociationSet>
         </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
@@ -179,6 +143,7 @@
           <EntitySetMapping Name="Logins">
             <EntityTypeMapping TypeName="FoodReceipesModel.Login">
               <MappingFragment StoreEntitySet="Login">
+                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
@@ -203,9 +168,7 @@
                 <ScalarProperty Name="Ingredient" ColumnName="Ingredient" />
                 <ScalarProperty Name="HTM" ColumnName="HTM" />
                 <ScalarProperty Name="VNB" ColumnName="VNB" />
-                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
                 <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
