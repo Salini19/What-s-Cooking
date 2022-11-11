@@ -70,11 +70,11 @@ namespace Cooking_App.Controllers
             bool ans = lmethods.Search(l.Email, l.Password);
             if (ans)
             {
-                string Email = l.Email;
-                string Password = l.Password;
+                //string Email = l.Email;
+                //string Password = l.Password;
                 Login u = lmethods.GetName(l.Email, l.Password);
                 TempData["T1"] = u.UserName;
-                lmethods.Temporary(Email, Password);
+                lmethods.Temporary(l.Email, l.Password);
                 TempData["sucess"] = "success";
                 return RedirectToAction("VNBMenu");
             }
@@ -92,6 +92,8 @@ namespace Cooking_App.Controllers
             lmethods.DeleteLogged();
             return View();
         }
+
+
         [HttpPost]
         public ActionResult SignupPage(FormCollection form)
         {
@@ -103,12 +105,12 @@ namespace Cooking_App.Controllers
             {
                 FullName = fname + " " + lname;
             }
-            
+
             FullName = fname;
             u.UserName = FullName;
             u.Email = form["email"];
-            u.DOB =Convert.ToDateTime( form["dob"]);
-            u.MobileNumber = Convert.ToDecimal(form["no"]);
+            u.DOB = Convert.ToDateTime(form["dob"]);
+            u.MobileNumber = form["no"];
             u.Password = form["password"];
             string s = form["confirm password"];
             u.PhotoName = "Profile.jpg";
@@ -127,8 +129,8 @@ namespace Cooking_App.Controllers
                 ViewBag.pass = "Confirm password and password should be same";
                 return View();
             }
-           
-            
+
+
             return View();
         }
         public ActionResult ForgotPassword()
@@ -217,13 +219,13 @@ namespace Cooking_App.Controllers
             TempData["T1"] = u.UserName;
 
             Receipe m = methods.GetInfo(id);
-            ViewBag.Rname = m.RName;    //RName = Recipe Name
-            ViewBag.Vnb = m.VNB;        //VNB = Veg Non-Veg Beverage
+            ViewBag.Rname = m.RName;   
+            ViewBag.Vnb = m.VNB;        
             ViewBag.State = m.State;
             ViewBag.Photo = m.Photo;
             ViewBag.Youtube = m.Youtube;
             ViewBag.Ingredient = m.Ingredient;
-            ViewBag.Htm = m.HTM;        //HTM = How To Make
+            ViewBag.Htm = m.HTM;      
             return View();
         }
 
@@ -255,37 +257,18 @@ namespace Cooking_App.Controllers
             int id = u.Id;
 
             Login p = lmethods.GetInfoProfile(id);
-            ViewBag.ID = p.Id;
-            ViewBag.Username = p.UserName;
-            ViewBag.Email = p.Email;
-            ViewBag.Password = p.Password;
-            ViewBag.Gender = p.Gender;
-            ViewBag.Mobile = p.MobileNumber;
-            ViewBag.Profession = p.Profession;
-            ViewBag.City = p.City;
-            ViewBag.DOB = p.DOB;        // Date Of Birth
-            ViewBag.PhotoName = p.PhotoName;
-            return View();
+          
+            return View(p);
         }
         [HttpPost]
-        public ActionResult Profile(FormCollection form)
+        public ActionResult Profile(Login l)
         {
-            Login l = new Login();
-            l.UserName = form["username"];
-            l.Id = (int)ViewBag.ID;
-            l.Email = form["email"];
-            l.Password =form ["password"];
-            //string profe = profession != null ? profession : " ";
-            l.Profession = form["profession"];
-            l.DOB = Convert.ToDateTime(form["dob"]);
-            l.MobileNumber =Convert.ToDecimal(form["no"]);
-            l.City = form["city"];
-            l.Gender = form["gender"];
-            l.PhotoName = form["Photoname"];
+        
             bool ans= lmethods.UpdateProfile(l);
             if (ans)
             {
                 ViewBag.profile = "Profile Updated Successfully";
+                return RedirectToAction("VNBMenu");
                 
             }
              

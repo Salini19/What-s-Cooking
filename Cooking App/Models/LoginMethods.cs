@@ -17,8 +17,6 @@ namespace Cooking_App
                 food = new FoodReceipesEntities();
         }
        
-
-
         public int Feedback(string name, string email, string msg)
         {
             FeedBack f = new FeedBack();
@@ -40,16 +38,12 @@ namespace Cooking_App
         }
         public List<FeedBack> FeedbackInfo()
         {
-            var list = food.FeedBacks.ToList();
+            var list = food.FeedBacks.Take(3).ToList();
             return list;
-            //= new List<FeedBack>();
-            //string str = "select Top 3 * from Feedback order by Fid desc";
-            
+                   
         }
         public List<FeedBack> AllFeedbackInfo()
         {
-
-
             var list = food.FeedBacks.OrderByDescending(x => x.Email).ToList();
             return list;
         }
@@ -73,7 +67,6 @@ namespace Cooking_App
         public bool Search(string user, string pass)
         {
            
-
             var list = food.Logins.ToList();
             bool ans=list.Any(x => x.Email == user && x.Password==pass );
             return ans;        
@@ -231,33 +224,6 @@ namespace Cooking_App
             return l;
         }
 
-        public int UpdateProfilePhoto(Login l)
-        {
-            try
-            {
-                var list = food.Logins.ToList();
-                Login found = list.Find(x => x.Id == l.Id);
-                found.Id = l.Id;
-                found.Email = l.Email;
-                found.Password = l.Password;
-                found.Profession = l.Profession;
-                found.City = l.City;
-                found.DOB = l.DOB;
-                found.PhotoName = l.PhotoName;
-                found.UserName = l.UserName;
-                found.Gender = l.Gender;
-
-                food.SaveChanges();
-
-                return 1;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-        }
 
         public bool UpdateProfile(Login l)
         {

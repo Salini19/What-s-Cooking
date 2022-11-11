@@ -142,6 +142,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Global.asax.cs">
@@ -309,14 +310,18 @@
     <Content Include="Views\Main\FeedbackPage.cshtml" />
     <Content Include="Views\Main\StateWiseMenu.cshtml" />
     <Content Include="Views\Main\VNBMenu.cshtml" />
-    <Content Include="Views\Main\SignupPage.cshtml" />
     <Content Include="Views\Main\LoginPage.cshtml" />
-    <Content Include="Views\Main\Index.cshtml" />
     <Content Include="Views\Main\LogOut.cshtml" />
     <Content Include="Views\Main\Profile.cshtml" />
     <Content Include="Views\Main\MainMenu.cshtml" />
     <Content Include="Views\Main\Info.cshtml" />
     <Content Include="Views\Main\ForgotPassword.cshtml" />
+    <Content Include="Views\Admin\Create.cshtml" />
+    <Content Include="Views\Admin\Delete.cshtml" />
+    <Content Include="Views\Admin\Details.cshtml" />
+    <Content Include="Views\Admin\Edit.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Main\SignupPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

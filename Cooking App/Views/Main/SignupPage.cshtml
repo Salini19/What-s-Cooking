@@ -80,7 +80,7 @@
                                     </td>
                                     <td>
                                         <span style="color: #21618C;font-weight:600;">Mobile Number</span>
-                                        <input type="number" maxlength="10" id="no" name="no" class="form-control" placeholder="1234567890" required />
+                                        <input type="tel" id="no" name="no" maxlength="10" class="form-control" placeholder="1234567890" pattern="[0-9]{10}" required />
                                     </td>
                                     <td>&nbsp;</td>
                                 </tr>
@@ -116,7 +116,7 @@
                                     <td style="padding-left: 30px;">
                                         <span style="color: #21618C;font-weight:600;"> Confirm Password</span>
                                         <input type="password" id="confirm password" name="Confirm password" class="form-control" placeholder="Re-Enter the password" required />
-                                        <label style="color:red"> @ViewBag.pass</label>
+
 
                                     </td>
                                     <td>&nbsp;</td>
@@ -154,12 +154,13 @@
             </div>
         </div>
     }
-        @if (ViewBag.pass != null)
+    
+        @if (ViewBag.Message != null)
         {
             <script type="text/javascript">alert("Confirm password and password should be same");</script>
         }
 
-        <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
+    <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
 
 </body>
 </html>

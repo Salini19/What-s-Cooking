@@ -25,6 +25,6 @@ namespace Cooking_App.Models
         public string Profession { get; set; }
         public string City { get; set; }
         public string ProfilePhoto { get; set; }
-        public Nullable<decimal> MobileNumber { get; set; }
+        public string MobileNumber { get; set; }
     }
 }

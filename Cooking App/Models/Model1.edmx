@@ -37,7 +37,7 @@
           <Property Name="Profession" Type="varchar" MaxLength="30" />
           <Property Name="City" Type="varchar" MaxLength="20" />
           <Property Name="ProfilePhoto" Type="nvarchar(max)" />
-          <Property Name="MobileNumber" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="MobileNumber" Type="varchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="Receipe">
           <Key>
@@ -94,7 +94,7 @@
           <Property Name="Profession" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="City" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="ProfilePhoto" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="MobileNumber" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="MobileNumber" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
         </EntityType>
         <EntityType Name="Receipe">
           <Key>
