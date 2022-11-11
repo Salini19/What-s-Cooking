@@ -29,6 +29,5 @@ namespace Cooking_App.Models
         public virtual DbSet<Logged> Loggeds { get; set; }
         public virtual DbSet<Login> Logins { get; set; }
         public virtual DbSet<Receipe> Receipes { get; set; }
-        public virtual DbSet<State> States { get; set; }
     }
 }

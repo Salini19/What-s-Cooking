@@ -26,6 +26,5 @@ namespace Cooking_App.Models
         public Nullable<int> UserId { get; set; }
     
         public virtual Login Login { get; set; }
-        public virtual State State1 { get; set; }
     }
 }

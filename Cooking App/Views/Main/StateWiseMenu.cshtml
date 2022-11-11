@@ -72,11 +72,11 @@
                         <div class="col-md-2">
                             <select class="form-control" name="choice2" id="choice2" style="margin-right:300px;" required>
                                 <option></option>
-                                <option>Maharashtra</option>
+                                <option>Telungana</option>
                                 <option>Punjab</option>
-                                <option>Uttar Pradesh</option>
+                                <option>Andra Pradesh</option>
                                 <option>Gujrat</option>
-                                <option>Jammu Kashmir</option>
+                                <option>Kerala</option>
                                 <option>Rajsthan</option>
                                 <option>Karnataka</option>
                                 <option>TamilNadu</option>
@@ -139,11 +139,14 @@
 
     <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
     @*@section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    }*@
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }*@
+    
+  
+
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    @*@RenderSection("scripts", required: false)*@
+    <script src="~/Scripts/jquery.validate.min.js"></script>
 </body>
 </html>
 

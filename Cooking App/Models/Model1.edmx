@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="FoodReceipesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="FoodReceipesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="FeedBack">
           <Key>
             <PropertyRef Name="Name" />
@@ -53,24 +53,6 @@
           <Property Name="State" Type="varchar" MaxLength="30" />
           <Property Name="UserId" Type="int" />
         </EntityType>
-        <EntityType Name="State">
-          <Key>
-            <PropertyRef Name="Sname" />
-          </Key>
-          <Property Name="Sname" Type="varchar" MaxLength="30" Nullable="false" />
-        </EntityType>
-        <Association Name="FK__Receipe__State__628FA481">
-          <End Role="State" Type="Self.State" Multiplicity="0..1" />
-          <End Role="Receipe" Type="Self.Receipe" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="State">
-              <PropertyRef Name="Sname" />
-            </Principal>
-            <Dependent Role="Receipe">
-              <PropertyRef Name="State" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Receipe__UserId__46E78A0C">
           <End Role="Login" Type="Self.Login" Multiplicity="0..1" />
           <End Role="Receipe" Type="Self.Receipe" Multiplicity="*" />
@@ -88,18 +70,12 @@
           <EntitySet Name="Logged" EntityType="Self.Logged" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Login" EntityType="Self.Login" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Receipe" EntityType="Self.Receipe" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="State" EntityType="Self.State" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Receipe__State__628FA481" Association="Self.FK__Receipe__State__628FA481">
-            <End Role="State" EntitySet="State" />
-            <End Role="Receipe" EntitySet="Receipe" />
-          </AssociationSet>
           <AssociationSet Name="FK__Receipe__UserId__46E78A0C" Association="Self.FK__Receipe__UserId__46E78A0C">
             <End Role="Login" EntitySet="Login" />
             <End Role="Receipe" EntitySet="Receipe" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="FoodReceipesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -152,14 +128,6 @@
           <Property Name="State" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="UserId" Type="Int32" />
           <NavigationProperty Name="Login" Relationship="Self.FK__Receipe__UserId__46E78A0C" FromRole="Receipe" ToRole="Login" />
-          <NavigationProperty Name="State1" Relationship="Self.FK__Receipe__State__628FA481" FromRole="Receipe" ToRole="State" />
-        </EntityType>
-        <EntityType Name="State">
-          <Key>
-            <PropertyRef Name="Sname" />
-          </Key>
-          <Property Name="Sname" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Receipes" Relationship="Self.FK__Receipe__State__628FA481" FromRole="State" ToRole="Receipe" />
         </EntityType>
         <Association Name="FK__Receipe__UserId__46E78A0C">
           <End Role="Login" Type="Self.Login" Multiplicity="0..1" />
@@ -173,30 +141,13 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Receipe__State__628FA481">
-          <End Role="State" Type="Self.State" Multiplicity="0..1" />
-          <End Role="Receipe" Type="Self.Receipe" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="State">
-              <PropertyRef Name="Sname" />
-            </Principal>
-            <Dependent Role="Receipe">
-              <PropertyRef Name="State" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="FoodReceipesEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="FeedBacks" EntityType="Self.FeedBack" />
           <EntitySet Name="Loggeds" EntityType="Self.Logged" />
           <EntitySet Name="Logins" EntityType="Self.Login" />
           <EntitySet Name="Receipes" EntityType="Self.Receipe" />
-          <EntitySet Name="States" EntityType="Self.State" />
           <AssociationSet Name="FK__Receipe__UserId__46E78A0C" Association="Self.FK__Receipe__UserId__46E78A0C">
             <End Role="Login" EntitySet="Logins" />
-            <End Role="Receipe" EntitySet="Receipes" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Receipe__State__628FA481" Association="Self.FK__Receipe__State__628FA481">
-            <End Role="State" EntitySet="States" />
             <End Role="Receipe" EntitySet="Receipes" />
           </AssociationSet>
         </EntityContainer>
@@ -255,13 +206,6 @@
                 <ScalarProperty Name="RoleId" ColumnName="RoleId" />
                 <ScalarProperty Name="State" ColumnName="State" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="States">
-            <EntityTypeMapping TypeName="FoodReceipesModel.State">
-              <MappingFragment StoreEntitySet="State">
-                <ScalarProperty Name="Sname" ColumnName="Sname" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

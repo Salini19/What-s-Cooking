@@ -9,9 +9,7 @@
         <EntityTypeShape EntityType="FoodReceipesModel.Logged" Width="1.5" PointX="2.75" PointY="5.75" IsExpanded="true" />
         <EntityTypeShape EntityType="FoodReceipesModel.Login" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="FoodReceipesModel.Receipe" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="FoodReceipesModel.State" Width="1.5" PointX="0.75" PointY="6" IsExpanded="true" />
         <AssociationConnector Association="FoodReceipesModel.FK__Receipe__UserId__46E78A0C" ManuallyRouted="false" />
-        <AssociationConnector Association="FoodReceipesModel.FK__Receipe__State__628FA481" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

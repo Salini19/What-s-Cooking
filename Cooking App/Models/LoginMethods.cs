@@ -55,35 +55,28 @@ namespace Cooking_App
         }
 
 
-        public int Save(Login l)
+        public bool Save(Login l)
         {
-            int res;
+            
             try
             {
                 food.Logins.Add(l);
                 food.SaveChanges();
-                res = 1;
+                return true;
             }
             catch (Exception )
             {
-                res= 0;
+                return false;
             }
             
-            return res;
         }
-        public int Search(string user, string pass)
+        public bool Search(string user, string pass)
         {
            
+
             var list = food.Logins.ToList();
-            Login u=list.Find(x => x.Email == user);
-            if (u!=null)
-            {
-                if (u.Password==pass)
-                {
-                    return 1;
-                }
-            }
-            return 0;           
+            bool ans=list.Any(x => x.Email == user && x.Password==pass );
+            return ans;        
         }
 
         // Forget Password Query
@@ -127,14 +120,7 @@ namespace Cooking_App
         public Login GetName(string email, string pass)
         {
             var list = food.Logins.ToList();
-            Login u = list.Find(x => x.Email == email);
-            if (u != null)
-            {
-                if (u.Password == pass)
-                {
-                    return u;
-                }
-            }
+            Login u= list.Find(x => x.Email == email && x.Password == pass);
             return u;
         }
 
@@ -233,7 +219,70 @@ namespace Cooking_App
 
         public void DeleteLogged()
         {
+          
             food.Loggeds.RemoveRange(food.Loggeds);
+            food.SaveChanges();
+        }
+
+        public Login GetInfoProfile(int id)
+        {
+            var List = food.Logins.ToList();
+            Login l = List.Find(x => x.Id == id);
+            return l;
+        }
+
+        public int UpdateProfilePhoto(Login l)
+        {
+            try
+            {
+                var list = food.Logins.ToList();
+                Login found = list.Find(x => x.Id == l.Id);
+                found.Id = l.Id;
+                found.Email = l.Email;
+                found.Password = l.Password;
+                found.Profession = l.Profession;
+                found.City = l.City;
+                found.DOB = l.DOB;
+                found.PhotoName = l.PhotoName;
+                found.UserName = l.UserName;
+                found.Gender = l.Gender;
+
+                food.SaveChanges();
+
+                return 1;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+        public int UpdateProfile(Login l)
+        {
+            try
+            {
+                var list = food.Logins.ToList();
+                Login found = list.Find(x => x.Id == l.Id);
+                found.Id = l.Id;
+                found.Email = l.Email;
+                found.Password = l.Password;
+                found.Profession = l.Profession;
+                found.City = l.City;
+                found.DOB = l.DOB;
+                found.UserName = l.UserName;
+                found.Gender = l.Gender;
+
+                food.SaveChanges();
+
+                return 1;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
 
         }
     }

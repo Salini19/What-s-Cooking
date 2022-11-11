@@ -16,12 +16,12 @@ namespace Cooking_App
         FoodReceipesEntities food = new FoodReceipesEntities();
         public int GetCountId()
         {
-            return food.Receipes.Count();
+            return food.Logins.Count();
         }
         public int GetCountRId()
         {
 
-            return food.Logins.Count();
+            return food.Receipes.Count();
         }
         public int Insert(Receipe m)
         {
@@ -149,12 +149,7 @@ namespace Cooking_App
             }
         }
 
-        public Login GetInfoProfile(int id)
-        {
-            var List=food.Logins.ToList();
-            Login l= List.Find(x => x.Id == id);
-            return l;
-        }
+      
         //public Profile GetInfoProfile(int id)
         //{
         //    Profile m = new Profile();
@@ -183,33 +178,7 @@ namespace Cooking_App
         //    }
         //    return m;
         //}
-        public int UpdateProfilePhoto(Login l)
-        {
-            try
-            {
-                var list = food.Logins.ToList();
-                Login found = list.Find(x => x.Id == l.Id);
-                found.Id = l.Id;
-                found.Email = l.Email;
-                found.Password = l.Password;
-                found.Profession = l.Profession;
-                found.City = l.City;
-                found.DOB = l.DOB;
-                found.PhotoName = l.PhotoName;
-                found.UserName = l.UserName;
-                found.Gender = l.Gender;
-
-                food.SaveChanges();
-
-                return 1;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-            
-        }
+      
         //public int UpdateProfilePhoto(Profile p)
         //{
         //    string str = "update Login set Username=@username,Email=@email,Password=@pass,Profession=@profession,City=@city,DOB=@dob,ProfilePhoto=@pname,Gender=@gender where Id=@id";
@@ -228,32 +197,7 @@ namespace Cooking_App
         //    con.Close();
         //    return res;
         //}
-        public int UpdateProfile(Login l)
-        {
-            try
-            {
-                var list = food.Logins.ToList();
-                Login found = list.Find(x => x.Id == l.Id);
-                found.Id = l.Id;
-                found.Email = l.Email;
-                found.Password = l.Password;
-                found.Profession = l.Profession;
-                found.City = l.City;
-                found.DOB = l.DOB;
-                found.UserName = l.UserName;
-                found.Gender = l.Gender;
-
-                food.SaveChanges();
-
-                return 1;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-        }
+     
         //public int UpdateProfile(Profile p)
         //{
         //    string str = "update Login set Username=@username,Email=@email,Password=@pass,Profession=@profession,City=@city,DOB=@dob,Gender=@gender where Id=@id";

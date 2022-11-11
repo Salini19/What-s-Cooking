@@ -1,9 +1,13 @@
 ﻿using Cooking_App.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace Cooking_App.Controllers
 {
@@ -56,7 +60,39 @@ namespace Cooking_App.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult LoginPage(FormCollection form, DateTime date)
+        public ActionResult LoginPage( FormCollection form)
+        {
+            Login l = new Login();
+            l.Email = form["email"];
+            l.Password = form["password"];
+
+            bool ans = lmethods.Search(l.Email, l.Password);
+            if (ans)
+            {
+                string Email = l.Email;
+                string Password = l.Password;
+                Login u = lmethods.GetName(l.Email, l.Password);
+                TempData["T1"] = u.UserName;
+                lmethods.Temporary(Email, Password);
+                TempData["sucess"] = "success";
+                return RedirectToAction("VNBMenu");
+            }
+            else
+            {
+                ViewBag.Message = "Invalid Username or password";
+                return View();
+            }
+       
+        }
+
+        public ActionResult SignupPage()
+        {
+            TempData["M1"] = null;
+            lmethods.DeleteLogged();
+            return View();
+        }
+        [HttpPost]
+        public ActionResult SignupPage(FormCollection form)
         {
             Login u = new Login();
             string fname = form["fname"];
@@ -66,54 +102,25 @@ namespace Cooking_App.Controllers
             {
                 FullName = fname + " " + lname;
             }
-            else
-                FullName = fname;
+            
+            FullName = fname;
             u.UserName = FullName;
             u.Email = form["email"];
             u.Password = form["password"];
-            if (u.UserName != null && date == null)
-            {
-                u.RoleID = 2;
-                u.PhotoName = "Profile.jpg";
-                int res = lmethods.Save(u);
-                if (res == 1)
-                    return RedirectToAction("LoginPage");
-            }
-            else if (date == null)
-            {
-                int res = lmethods.Search(u.Email, u.Password);
-                if (res == 1)
-                {
-                    string Email = u.Email;
-                    string Password = u.Password;
-                    u = lmethods.GetName(u.Email, u.Password);
-                    TempData["T1"] = u.UserName;
-                    lmethods.Temporary(Email, Password);
-                    TempData["sucess"] = "success";
-                    return RedirectToAction("VNBMenu");
-                }
-                else
-                {
-                    ViewBag.Message = "Invalid Username or password";
-                    return View();
-                }
-            }
-            else
-            {
-                int res = lmethods.ForgetPassword(u.Email, date, u.Password);
-                if (res == 1)
-                {
-                    ViewBag.Msg1 = "Password Changed Sucessfully";
-                    return View();
-                }
-                else
-                {
-                    ViewBag.Msg2 = "Given input is not valid";
-                    return View();
-                }
-            }
+            u.PhotoName = "Profile.jpg";
 
+            bool ans = lmethods.Save(u);
+            if (ans)
+            {
+                return RedirectToAction("LoginPage");
+            }
+             
             return View();
+        }
+        public ActionResult LogOut()
+        {
+            lmethods.DeleteLogged();
+            return RedirectToAction("MainPage");
         }
 
         public ActionResult VNBMenu()
@@ -244,60 +251,68 @@ namespace Cooking_App.Controllers
                 return RedirectToAction("ModifyBeverage");
             return View();
         }
-        // GET: Main
-        public ActionResult Index()
+    
+        public ActionResult Profile()
         {
+            Login u = new Login();
+            Logged l = lmethods.TempName();
+            u = lmethods.GetName(l.Name, l.Password);
+            TempData["T1"] = u.UserName;
+            int id = u.Id;
+
+            Login p = lmethods.GetInfoProfile(id);
+            ViewBag.ID = p.Id;
+            ViewBag.Username = p.UserName;
+            ViewBag.Email = p.Email;
+            ViewBag.Password = p.Password;
+            ViewBag.Gender = p.Gender;
+            ViewBag.Profession = p.Profession;
+            ViewBag.City = p.City;
+            ViewBag.DOB = p.DOB;        // Date Of Birth
+            ViewBag.PhotoName = p.PhotoName;
             return View();
         }
-
-        // GET: Main/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: Main/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Main/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Profile(FormCollection form)
         {
-            try
+            Login l = new Login();
+            l.UserName = username;
+            l.Email = email;
+            l.Password = password;
+            string profe = profession != null ? profession : " ";
+            p.Profession = profe;
+            string d1 = dob != null ? dob : " ";    // dob = Date Of Birth
+            p.DOB = d1;
+            string c1 = city != null ? city : " ";
+            p.City = c1;
+            string gen = gender != null ? gender : " ";
+            p.Gender = gen;
+            p.Id = id;
+            if (pro.ProfilePhoto == null)
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
+                if (remove != null)
+                {
+                    p.PhotoName = "Profile.jpg";
+                    int res = mdb.UpdateProfilePhoto(p);
+                    if (res == 1)
+                        return RedirectToAction("Profile");
+                }
+                else
+                {
+                    int res = mdb.UpdateProfile(p);
+                    if (res == 1)
+                        return RedirectToAction("Profile");
+                }
             }
-            catch
+            else
             {
-                return View();
+                p.PhotoName = uniqueFileName;
+                int res = mdb.UpdateProfilePhoto(p);
+                if (res == 1)
+                    return RedirectToAction("Profile");
             }
-        }
-
-        // GET: Main/Edit/5
-        public ActionResult Edit(int id)
-        {
             return View();
         }
 
-        // POST: Main/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }
