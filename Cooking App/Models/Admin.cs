@@ -11,23 +11,12 @@ namespace Cooking_App.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
-    public partial class Login
+    
+    public partial class Admin
     {
-        public int Id { get; set; }
-        public string UserName { get; set; }
+        public int Adminid { get; set; }
+        public string Username { get; set; }
         public string Email { get; set; }
-        [DataType(DataType.Password)]
         public string Password { get; set; }
-        public int RoleID { get; set; }
-        public string PhotoName { get; set; }
-        [DataType(DataType.Date)]
-        public Nullable<System.DateTime> DOB { get; set; }
-        public string Gender { get; set; }
-        public string Profession { get; set; }
-        public string City { get; set; }
-        public string ProfilePhoto { get; set; }
-        public string MobileNumber { get; set; }
     }
 }

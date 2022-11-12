@@ -53,8 +53,9 @@
             </div>
         </section>
     }
-    @if (TempData["T1"] != null)
-    {<section class="Menu">
+    @if (TempData["T1"] != null)  
+    {
+        <section class="Menu">
             <nav class="navbar navbar-expand-lg bg-" style="background:#142F4A">
                 <div class="container-fluid">
 
@@ -63,45 +64,63 @@
                     </button>
                     <div class="collapse navbar-collapse" id="loged">
 
-                        @*<div class="navbar-nav">
-            <span class="navbar-brand" href="#" style="color: #f1c40f; font-size: 25px;font-weight:600  ">whats cooking</span>
 
-
-            <a class="nav-link" style="color: #fdfefe;font-size: 19px;" href="main/vnbmenu">veg</a>
-            <a class="nav-link" style="color: #fdfefe;font-size: 19px;" href="main/vnbmenu" ">non-veg</a>
-            <a class="nav-link" style="color: #fdfefe;font-size: 19px;" href="main/vnbmenu">beverage</a>
-            <a class="nav-link" asp-area="" asp-controller="main" asp-action="profile">&nbsp;hey, @tempdata["t1"] !</a>
-            <a class="nav-link" style="color: #fdfefe;font-size: 19px;" href="@html.actionlink("logout", "logout", "main")" >&nbsp; logout</a>
-                            <a class="nav-link" href="@url.action("logout", "main")">&nbsp; logout</a>
-
-                            </div>*@
                         <ul class="navbar-nav">
                             <span class="navbar-brand" href="#" style="color: #F1C40F; font-size: 25px;font-weight:600  ">Whats Cooking</span>
 
+                            <li class="nav-link" style="color: #FDFEFE;font-size: 19px;">@Html.ActionLink("Main Menu", "VNBMenu", "Main")</li>
+                            <li class="nav-link" style="color: #FDFEFE;font-size: 19px;">@Html.ActionLink("Veg", "StateWiseMenu", new { @id = "Veg" })</li>
 
-                            <li class="nav-link" style="color: #FDFEFE;font-size: 19px;">@Html.ActionLink("Veg", "VNBMenu", "Main")</li>
+                            <li class="nav-link" style="color: #FDFEFE;font-size: 19px;">@Html.ActionLink("Non Veg", "StateWiseMenu", new { @id = "Non Veg" })</li>
 
-                            <li class="nav-link" style="color: #FDFEFE;font-size: 19px;">@Html.ActionLink("Non-Veg", "VNBMenu", "Main")</li>
-
-                            <li class="nav-link" style="color: #FDFEFE;font-size: 19px;">@Html.ActionLink("Beverage", "MainPage", "Main")</li>
+                            <li class="nav-link" style="color: #FDFEFE;font-size: 19px;">@Html.ActionLink("Beverage", "BeverageMenu", new { @id = "Beverage" })</li>
 
                             @*<li class="nav-link" style="color: #FDFEFE;font-size: 19px;">@Html.ActionLink("Hey, @TempData[\"T1\"] !", "Profile", "Main")</li>*@
                             <a class="nav-link" href="~/Main/Profile">&nbsp;Hey, @TempData["T1"] !</a>
                             <div>
-                            <li class="nav-link" style="color: #FDFEFE;font-size: 19px;">
+                            <li class="nav-link" style="color: #FDFEFE;font-size: 19px;margin-left:800px" >
                                 @Html.ActionLink("LogOut", "LogOut", "Main")
-                                                        <script>
-                                                            function logOut() {
-                                                                window.close = function () {
-                                                                    window.open('Default.aspx', '_blank');
-                                                                };
-                                                            }
-                                                        </script>
-                                                    </li>
-                    
+                            </li>
 
-                    </ul>
+
+
+                        </ul>
+                    </div>
                 </div>
+            </nav>
+        </section>
+    }
+    else if(TempData["A1"] != null)
+    {
+        <section class="Menu">
+            <nav class="navbar navbar-expand-lg bg-" style="background:#142F4A">
+                <div class="container-fluid">
+
+                    <button class="navbar-toggler" type="button" id="navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="loged">
+
+
+                        <ul class="navbar-nav">
+                            <span class="navbar-brand" href="#" style="color: #F1C40F; font-size: 25px;font-weight:600 ">Whats Cooking</span>
+
+                            <li class="nav-link" style="color: #FDFEFE;font-size: 19px;">@Html.ActionLink("Main Menu", "Index", "Admin")</li>
+                            @*<li class="nav-link" style="color: #FDFEFE;font-size: 19px;">@Html.ActionLink("Veg", "StateWiseMenu", new { @id = "Veg" })</li>
+
+        <li class="nav-link" style="color: #FDFEFE;font-size: 19px;">@Html.ActionLink("Non Veg", "StateWiseMenu", new { @id = "Non Veg" })</li>
+
+        <li class="nav-link" style="color: #FDFEFE;font-size: 19px;">@Html.ActionLink("Beverage", "BeverageMenu", new { @id = "Beverage" })</li>*@
+
+
+                            <a class="nav-link" style="color: #FDFEFE;font-size: 19px;" href="#">&nbsp;Hey, @TempData["A1"] !</a>
+
+                            <li class="nav-link" style="color: #FDFEFE;font-size: 19px;margin-left:1000px">
+                                @Html.ActionLink("Logout", "LogOut", "Admin")
+                            </li>
+
+                        </ul>
+                    </div>
                 </div>
             </nav>
         </section>
@@ -119,16 +138,15 @@
                     <div class="collapse navbar-collapse">
                         <span class="navbar-brand" href="#" style="color: #F1C40F; font-size: 25px;font-weight:600 ">Whats Cooking</span>
 
-                        <div class="navbar-nav" id="navbarNavAltMarkup" style="margin-left: 520px;">
+                        <div class="navbar-nav" id="navbarNavAltMarkup" style="margin-left: 800px;">
 
-                            <a class="nav-link" href="Main/MainPage">Home</a>
-                            <a class="nav-link" href="Main/LoginPage">Veg</a>
-                            <a class="nav-link" href="Main/LoginPage">Non-Veg</a>
-                            <a class="nav-link" href="Main/LoginPage">Beverage</a>
+                            <a class="nav-link" href="~/Main/MainPage">Home</a>
+
 
                             <a class="nav-link" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">About</a>
-                            <a class="nav-link" href="Main/LoginPage">Login/SignUp</a>
-                       
+                            <a class="nav-link" href="~/Main/LoginPage">Login/SignUp</a>
+
+                            <a class="nav-link" href="~/Admin/LoginPage">Admin</a>
                         </div>
 
                     </div>

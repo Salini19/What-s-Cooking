@@ -90,24 +90,7 @@ namespace Cooking_App
             return 0; 
         }
 
-        // Find Role Query
-        public Login GetRole(string user, string pass)
-        {
-
-            var list = food.Logins.ToList();
-            //Login l = new Login();
-            //l.RoleID = list.Where(x => x.Email == user && x.Password == pass).Select(selector: x => x.RoleID);
-            Login u = list.Find(x => x.Email == user && x.Password == pass);
-            if (u != null)
-            {
-                if (u.Password == pass)
-                {
-                    return u;
-                }
-             }       
-                return u;
-           // return (int)l.RoleID;
-        }
+      
 
         // Find Name Query
         public Login GetName(string email, string pass)

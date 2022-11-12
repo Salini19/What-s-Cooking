@@ -107,7 +107,7 @@
                         <div class="form-group">
                             @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label " })
                             <select class="form-control" name="gender" id="gender" style="margin-right:300px;">
-                                <option>@Html.DisplayFor(model=>model.Gender)</option>
+                                <option hidden>@Html.DisplayFor(model=>model.Gender)</option>
                                 <option>Male</option>
                                 <option>Female</option>
                                 <option>Transgender</option>

@@ -243,44 +243,6 @@ namespace Cooking_App.Controllers
             ViewBag.List = methods.GetBeverageList(id);
             return View();
         }
-
-        //[HttpPost]
-        //public ActionResult BeverageMenu(Receipe r)
-        //{
-            
-            //string uniqueFileName = null;
-            //if (r.Photo != null)
-            //{
-            //    string FileNAme =
-            //    string uploadsFolder = Path.Combine(Server.w, "NewlyAddedImg");
-            //    uniqueFileName = Guid.NewGuid().ToString() + "_" + imag.Photo.FileName;
-            //    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-            //    r.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
-            //}
-        //    string youtube = imag.Youtube;
-        //    youtube = youtube.Replace("watch?v=", "embed/");
-        //    imag.Youtube = youtube;
-        //    m.Youtube = youtube;
-        //    m.RName = imag.RName;   //RName = Recipe Name
-        //    m.HTM = imag.HTM;       //HTM = How To Make
-        //    m.Ingredient = ingredient;
-        //    m.Photo = uniqueFileName;
-        //    m.State = choice2;
-        //    m.VNB = choice1;        //VNB = Veg Non-Veg Beverage
-
-        //    Login u = new Login();
-        //    Logged l = lmethods.TempName();
-        //    u = db.GetRole(l.Name, l.Password);
-        //    m.RoleId = u.RoleID;
-        //    m.UserId = u.Id;
-        //    int res = mdb.Insert(m);
-        //    if (res == 1)
-        //        return RedirectToAction("BeverageMenu");
-        //    return View();
-        //}
-
-
-
         public ActionResult Delete(int id)
         {
             int res = methods.Delete(id);
