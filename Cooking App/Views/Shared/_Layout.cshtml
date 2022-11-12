@@ -64,17 +64,17 @@
                     <div class="collapse navbar-collapse" id="loged">
 
                         @*<div class="navbar-nav">
-        <span class="navbar-brand" href="#" style="color: #f1c40f; font-size: 25px;font-weight:600  ">whats cooking</span>
+            <span class="navbar-brand" href="#" style="color: #f1c40f; font-size: 25px;font-weight:600  ">whats cooking</span>
 
 
-        <a class="nav-link" style="color: #fdfefe;font-size: 19px;" href="main/vnbmenu">veg</a>
-        <a class="nav-link" style="color: #fdfefe;font-size: 19px;" href="main/vnbmenu" ">non-veg</a>
-        <a class="nav-link" style="color: #fdfefe;font-size: 19px;" href="main/vnbmenu">beverage</a>
-        <a class="nav-link" asp-area="" asp-controller="main" asp-action="profile">&nbsp;hey, @tempdata["t1"] !</a>
-        <a class="nav-link" style="color: #fdfefe;font-size: 19px;" href="@html.actionlink("logout", "logout", "main")" >&nbsp; logout</a>
-                        <a class="nav-link" href="@url.action("logout", "main")">&nbsp; logout</a>
+            <a class="nav-link" style="color: #fdfefe;font-size: 19px;" href="main/vnbmenu">veg</a>
+            <a class="nav-link" style="color: #fdfefe;font-size: 19px;" href="main/vnbmenu" ">non-veg</a>
+            <a class="nav-link" style="color: #fdfefe;font-size: 19px;" href="main/vnbmenu">beverage</a>
+            <a class="nav-link" asp-area="" asp-controller="main" asp-action="profile">&nbsp;hey, @tempdata["t1"] !</a>
+            <a class="nav-link" style="color: #fdfefe;font-size: 19px;" href="@html.actionlink("logout", "logout", "main")" >&nbsp; logout</a>
+                            <a class="nav-link" href="@url.action("logout", "main")">&nbsp; logout</a>
 
-                        </div>*@
+                            </div>*@
                         <ul class="navbar-nav">
                             <span class="navbar-brand" href="#" style="color: #F1C40F; font-size: 25px;font-weight:600  ">Whats Cooking</span>
 
@@ -86,13 +86,22 @@
                             <li class="nav-link" style="color: #FDFEFE;font-size: 19px;">@Html.ActionLink("Beverage", "MainPage", "Main")</li>
 
                             @*<li class="nav-link" style="color: #FDFEFE;font-size: 19px;">@Html.ActionLink("Hey, @TempData[\"T1\"] !", "Profile", "Main")</li>*@
-                        <a class="nav-link" href="~/Main/Profile">&nbsp;Hey, @TempData["T1"] !</a>
+                            <a class="nav-link" href="~/Main/Profile">&nbsp;Hey, @TempData["T1"] !</a>
+                            <div>
+                            <li class="nav-link" style="color: #FDFEFE;font-size: 19px;">
+                                @Html.ActionLink("LogOut", "LogOut", "Main")
+                                                        <script>
+                                                            function logOut() {
+                                                                window.close = function () {
+                                                                    window.open('Default.aspx', '_blank');
+                                                                };
+                                                            }
+                                                        </script>
+                                                    </li>
+                    
 
-                            <li class="nav-link" style="color: #FDFEFE;font-size: 19px;">@Html.ActionLink("LogOut", "LogOut", "Main")</li>
-
-
-                        </ul>
-                    </div>
+                    </ul>
+                </div>
                 </div>
             </nav>
         </section>

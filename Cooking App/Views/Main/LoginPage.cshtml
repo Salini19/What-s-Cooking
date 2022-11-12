@@ -15,6 +15,11 @@
 <head>
     <title>Login Page</title>
     <link href="~/Content/LoginPage.css" rel="stylesheet" />
+    <script type="text/javascript">
+        function preventBack() { window.history.forward(); }
+        setTimeout("preventBack()", 0);
+        window.onunload = function () { null };
+    </script>
 </head>
 <body>
 
@@ -67,7 +72,7 @@
                         <div class="row" style="margin-top:20px;">
                             <div class="col-md-4"></div>
                             <div class="col-md-8">
-                                <a style="color:blue;font-weight:400" data-bs-toggle="modal" data-bs-target="#testmodal2">Forget Password</a>
+                                <a style="color:blue;font-weight:400" href="~/Main/ForgotPassword">Forget Password</a>
                             </div>
                         </div>
                         <div class="row">
