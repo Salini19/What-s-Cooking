@@ -1,13 +1,20 @@
 ﻿using Cooking_App.Models;
+using Cooking_WebApi.Models;
+using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Cryptography;
+using System.Security.Cryptography.Pkcs;
+using System.Text;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
 using System.Web.Security;
+using static System.Web.Razor.Parser.SyntaxConstants;
 
 
 namespace Cooking_App.Controllers
@@ -15,27 +22,55 @@ namespace Cooking_App.Controllers
     public class MainController : Controller
     {
         // GET: Main
-        ReceipeMethods methods = null;
-        LoginMethods lmethods = null;
-        FoodReceipesEntities food = null;
+
+        Uri baseAddress = new Uri("https://localhost:44322/api/");
+
+        HttpClient client;
+        LoginMethods lmethods;
+        ReceipeMethods methods ;
         public MainController()
         {
+            client = new HttpClient();
+            client.BaseAddress = baseAddress;
             methods = new ReceipeMethods();
             lmethods = new LoginMethods();
-            food = new FoodReceipesEntities();
+          
         }
+       
 
-
-        public ActionResult MainPage()
+    public ActionResult MainPage()
         {
+            List<Login> list = new List<Login >();
+            HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/User").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                String Data = response.Content.ReadAsStringAsync().Result;
+                list = JsonConvert.DeserializeObject<List<Login>>(Data);
+            }
+
+            List<Receipe> rlist = new List<Receipe>();
+            HttpResponseMessage response1 = client.GetAsync(client.BaseAddress + "/Recipe").Result;
+            if (response1.IsSuccessStatusCode)
+            {
+                String Data = response1.Content.ReadAsStringAsync().Result;
+                rlist = JsonConvert.DeserializeObject<List<Receipe>>(Data);
+            }
+            List<FeedBack> flist = new List<FeedBack>();
+            HttpResponseMessage response2 = client.GetAsync(client.BaseAddress + "/Feedback").Result;
+            if (response2.IsSuccessStatusCode)
+            {
+                String Data = response2.Content.ReadAsStringAsync().Result;
+                flist = JsonConvert.DeserializeObject<List<FeedBack>>(Data);
+            }
+
             try
             {
-                ViewBag.Id = food.Logins.Count();
-                ViewBag.Rid = food.Receipes.Count();
+                ViewBag.Id = list.Count();
+                ViewBag.Rid = rlist.Count();
                 TempData["T1"] = null;
                 TempData["M1"] = "MainPage";
                 lmethods.DeleteLogged();
-                ViewBag.FeedList = food.FeedBacks.Take(3).ToList();
+                ViewBag.FeedList = flist.Take(3);
                 return View();
             }
             catch (Exception)
@@ -48,15 +83,24 @@ namespace Cooking_App.Controllers
         [HttpPost]
         public ActionResult MainPage(string name, string email, string msg)
         {
+            
+            
             try
             {
                 FeedBack f = new FeedBack();
                 f.Name = name;
                 f.Email = email;
                 f.Msg = msg;
-                food.FeedBacks.Add(f);
-                food.SaveChanges();
-                ViewBag.FeedList = food.FeedBacks.Take(3).ToList();
+
+                string data = JsonConvert.SerializeObject(f);
+
+                StringContent content= new StringContent(data, Encoding.UTF8, "application/json");
+                HttpResponseMessage response=client.PostAsync(client.BaseAddress + "/Feedback", content).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    //ViewBag.FeedList = flist.Take(3);
+                    return View();
+                }
                 return View();
             }
             catch (Exception)
@@ -71,7 +115,14 @@ namespace Cooking_App.Controllers
 
         public ActionResult FeedbackPage()
         {
-            ViewBag.FeedList = food.FeedBacks.ToList();
+            List<FeedBack> flist = new List<FeedBack>();
+            HttpResponseMessage response2 = client.GetAsync(client.BaseAddress + "/Feedback").Result;
+            if (response2.IsSuccessStatusCode)
+            {
+                String Data = response2.Content.ReadAsStringAsync().Result;
+                flist = JsonConvert.DeserializeObject<List<FeedBack>>(Data);
+            }
+            ViewBag.FeedList = flist;
             return View();
         }
 
@@ -85,16 +136,23 @@ namespace Cooking_App.Controllers
         [HttpPost]
         public ActionResult LoginPage( FormCollection form)
         {
+            List<Login> list = new List<Login>();
+            HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/User").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                String Data = response.Content.ReadAsStringAsync().Result;
+                list = JsonConvert.DeserializeObject<List<Login>>(Data);
+            }
+
             Login l = new Login();
             l.Email = form["email"];
             l.Password = form["password"];
+            bool ans = list.Any(x => x.Email == l.Email && x.Password == l.Password);
 
-            bool ans = lmethods.Search(l.Email, l.Password);
             if (ans)
             {
-                //string Email = l.Email;
-                //string Password = l.Password;
-                Login u = lmethods.GetName(l.Email, l.Password);
+           
+                Login u = list.Find(x => x.Email == l.Email && x.Password == l.Password);
                 TempData["T1"] = u.UserName;
                 lmethods.Temporary(l.Email, l.Password);
                 TempData["sucess"] = "success";
@@ -135,16 +193,16 @@ namespace Cooking_App.Controllers
             u.MobileNumber = form["no"];
             u.Password = form["password"];
             string s = form["confirm password"];
-            u.PhotoName = "Profile.jpg";
             if (s == u.Password)
             {
-                bool ans = lmethods.Save(u);
-                if (ans)
+                string data = JsonConvert.SerializeObject(u);
+                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = client.PostAsync(client.BaseAddress + "/User",content).Result;
+                if (response.IsSuccessStatusCode)
                 {
                     return RedirectToAction("LoginPage");
                 }
-
-
+                return View();
             }
             else
             {
@@ -159,6 +217,8 @@ namespace Cooking_App.Controllers
         {
             TempData["M1"] = null;
             lmethods.DeleteLogged();
+
+            
             return View();
         }
 
@@ -170,17 +230,36 @@ namespace Cooking_App.Controllers
             l.DOB = Convert.ToDateTime(form["date"]);
             l.Password = form["password"];
 
-            int res = lmethods.ForgetPassword(l.Email, (DateTime)l.DOB, l.Password);
-            if (res == 1)
+            List<Login> list = new List<Login>();
+            HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/User").Result;
+            if (response.IsSuccessStatusCode)
             {
-                ViewBag.Msg1 = "Password Changed Sucessfully";
-                return View();
+                String Data = response.Content.ReadAsStringAsync().Result;
+                list = JsonConvert.DeserializeObject<List<Login>>(Data);
             }
-            else
+            Login u= list.Find(x=>x.Email==l.Email && x.DOB==l.DOB);
+            if (u!=null)
             {
-                ViewBag.Msg2 = "Given input is not valid";
-                return View();
+                u.Password = l.Password;
+
+                string data = JsonConvert.SerializeObject(u);
+                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+                HttpResponseMessage response1 = client.PutAsync(baseAddress + "/User/" + u.Id, content).Result;
+                if (response1.IsSuccessStatusCode)
+                {
+                    ViewBag.Msg1 = "Password Changed Sucessfully";
+                    return View();
+                }
+                else
+                {
+                    ViewBag.Msg2 = "Given input is not valid";
+                    return View();
+                }
+
             }
+            return View();
+            
+           
           
         }
 
@@ -210,9 +289,32 @@ namespace Cooking_App.Controllers
             ViewBag.Id = u.Id;
             lmethods.Temporaryvnb(l.Name, id);
 
-            //State m = new State();
-            ViewBag.StateList = methods.GetAllState(id);
-            return View();
+            try
+            {
+                List<Receipe> rlist = new List<Receipe>();
+                HttpResponseMessage response1 = client.GetAsync(client.BaseAddress + "/Recipe").Result;
+                if (response1.IsSuccessStatusCode)
+                {
+                    String Data = response1.Content.ReadAsStringAsync().Result;
+                    rlist = JsonConvert.DeserializeObject<List<Receipe>>(Data);
+                }
+
+                List<String> list = rlist.Where(x => x.VNB == id).Select(m => m.State).Distinct().ToList();
+                List<State> slist = new List<State>();
+                foreach (var item in list)
+                {
+                    slist.Add(new State { Sname = item });
+                }
+                ViewBag.StateList = slist;
+
+                return View();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
 
 
@@ -228,9 +330,31 @@ namespace Cooking_App.Controllers
             Receipe m = new Receipe();
             ViewBag.Id = u.Id;
             ViewBag.Image = m.Photo;
-            ViewBag.Vnb = l.Vnb;            //vnb = Veg Non-Veg Beverage
-            ViewBag.List = methods.GetAllProducts(id, l.Vnb);
-            return View();
+            ViewBag.Vnb = l.Vnb;
+
+            try
+            {
+                List<Receipe> rlist = new List<Receipe>();
+                HttpResponseMessage response1 = client.GetAsync(client.BaseAddress + "/Recipe").Result;
+                if (response1.IsSuccessStatusCode)
+                {
+                    String Data = response1.Content.ReadAsStringAsync().Result;
+                    rlist = JsonConvert.DeserializeObject<List<Receipe>>(Data);
+                }
+
+                List<Receipe> list1 = rlist.FindAll(x => x.State == id && x.VNB == l.Vnb);
+
+                ViewBag.List = list1;
+
+                return View();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            
         }
 
         public ActionResult Info(int id)
@@ -240,7 +364,14 @@ namespace Cooking_App.Controllers
             u = lmethods.GetName(l.Name, l.Password);
             TempData["T1"] = u.UserName;
 
-            Receipe m = methods.GetInfo(id);
+            Receipe m = new Receipe();
+            HttpResponseMessage response1 = client.GetAsync(client.BaseAddress + "/Recipe/"+id).Result;
+            if (response1.IsSuccessStatusCode)
+            {
+                String Data = response1.Content.ReadAsStringAsync().Result;
+                m = JsonConvert.DeserializeObject<Receipe>(Data);
+            }
+
             ViewBag.Rname = m.RName;   
             ViewBag.Vnb = m.VNB;        
             ViewBag.State = m.State;
@@ -261,10 +392,29 @@ namespace Cooking_App.Controllers
             ViewBag.Id = u.Id;
             lmethods.Temporaryvnb(l.Name, id);
 
-            State m = new State();
-           
-            ViewBag.List = methods.GetBeverageList(id);
-            return View();
+            try
+            {
+                List<Receipe> rlist = new List<Receipe>();
+                HttpResponseMessage response1 = client.GetAsync(client.BaseAddress + "/Recipe").Result;
+                if (response1.IsSuccessStatusCode)
+                {
+                    String Data = response1.Content.ReadAsStringAsync().Result;
+                    rlist = JsonConvert.DeserializeObject<List<Receipe>>(Data);
+                }
+
+                List<Receipe> list1 = rlist.FindAll(x =>  x.VNB == id);
+
+                ViewBag.List = list1;
+
+                return View();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+         
         }
         
     
@@ -276,21 +426,30 @@ namespace Cooking_App.Controllers
             TempData["T1"] = u.UserName;
             int id = u.Id;
 
-            Login p = lmethods.GetInfoProfile(id);
-          
+            Login p = new Login();
+
+            HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/User/"+id).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                String Data = response.Content.ReadAsStringAsync().Result;
+                p = JsonConvert.DeserializeObject<Login>(Data);
+            }
+
             return View(p);
         }
         [HttpPost]
         public ActionResult Profile(Login l)
         {
-        
-            bool ans= lmethods.UpdateProfile(l);
-            if (ans)
+
+            string data = JsonConvert.SerializeObject(l);
+            StringContent Content = new StringContent(data, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = client.PutAsync(baseAddress + "/User/" + l.Id, Content).Result;
+            if (response.IsSuccessStatusCode)
             {
                 ViewBag.profile = "Profile Updated Successfully";
                 return RedirectToAction("VNBMenu");
-                
             }
+            
              
            
             return View();

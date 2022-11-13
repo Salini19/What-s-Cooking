@@ -6,18 +6,30 @@ using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using Cooking_App.Models;
+using Cooking_WebApi.Models;
+using Newtonsoft.Json;
 
 namespace Cooking_App.Controllers
 {
     public class AdminController : Controller
     {
+        Uri baseAddress = new Uri("https://localhost:44322/api/");
+     
+        HttpClient client;
+        LoginMethods lmethods;
+        public AdminController()
+        {
+            client = new HttpClient();
+            client.BaseAddress = baseAddress;
+            lmethods = new LoginMethods();
+        }
 
-
-        private FoodReceipesEntities db = new FoodReceipesEntities();
-        LoginMethods lmethods = new LoginMethods();
+        
 
         public ActionResult LoginPage()
         {
@@ -28,12 +40,19 @@ namespace Cooking_App.Controllers
         [HttpPost]
         public ActionResult LoginPage(FormCollection form)
         {
+            List<Admin> list = new List<Admin>();
+            HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/Admin").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                String Data = response.Content.ReadAsStringAsync().Result;
+                list = JsonConvert.DeserializeObject<List<Admin>>(Data);
+            }
             Admin l = new Admin();
             l.Email = form["email"];
             l.Password = form["password"];
 
-            bool ans =db.Admins.Any(x=>x.Email==l.Email && x.Password==l.Password);
-            Admin u = db.Admins.FirstOrDefault(x=>x.Email==l.Email && x.Password==l.Password);
+            bool ans = list.Any(x => x.Email == l.Email && x.Password == l.Password);
+            Admin u = list.FirstOrDefault(x => x.Email == l.Email && x.Password == l.Password);
             if (ans)
             {            
                 TempData["A1"] = u.Username;
@@ -57,11 +76,18 @@ namespace Cooking_App.Controllers
         // GET: Admin
         public ActionResult Index()
         {
+            List<Receipe> list = new List<Receipe>();
+            HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/Recipe").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                String Data = response.Content.ReadAsStringAsync().Result;
+                list = JsonConvert.DeserializeObject<List<Receipe>>(Data);
+            }
             Logged l= lmethods.TempName();
             TempData["A1"] = l.Name;
             if (TempData["A1"] !=null)
             {
-                return View(db.Receipes.ToList());
+                return View(list);
             }
             else
             {
@@ -81,7 +107,13 @@ namespace Cooking_App.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-                Receipe receipe = db.Receipes.Find(id);
+                Receipe receipe = new Receipe();
+                HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/Recipe/" + id).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    String Data = response.Content.ReadAsStringAsync().Result;
+                    receipe = JsonConvert.DeserializeObject<Receipe>(Data);
+                }
                 if (receipe == null)
                 {
                     return HttpNotFound();
@@ -89,6 +121,7 @@ namespace Cooking_App.Controllers
                 return View(receipe);
             }
             return View();
+          
         }
 
         // GET: Admin/Create
@@ -128,17 +161,21 @@ namespace Cooking_App.Controllers
             r.State = receipe.State;
             r.VNB = receipe.VNB;
 
-            if (r!=null)
+
+            string data = JsonConvert.SerializeObject(r);
+
+            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = client.PostAsync(client.BaseAddress + "/Recipe", content).Result;
+            if (response.IsSuccessStatusCode)
             {
-                db.Receipes.Add(r);
-                db.SaveChanges();
                 return RedirectToAction("Index");
             }
+
             else
             {
                 return View();
             }
-            
+      
            
         }
 
@@ -153,7 +190,13 @@ namespace Cooking_App.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-                Receipe receipe = db.Receipes.Find(id);
+                Receipe receipe = new Receipe();
+                HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/Recipe/" + id).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    String Data = response.Content.ReadAsStringAsync().Result;
+                    receipe = JsonConvert.DeserializeObject<Receipe>(Data);
+                }
                 if (receipe == null)
                 {
                     return HttpNotFound();
@@ -162,7 +205,7 @@ namespace Cooking_App.Controllers
             }
             return View();
 
-          
+
         }
 
         // POST: Admin/Edit/5
@@ -172,54 +215,30 @@ namespace Cooking_App.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "RId,RName,Photo,Youtube,Ingredient,HTM,VNB,State")] Receipe receipe)
         {
-            if (ModelState.IsValid)
+
+
+            string data = JsonConvert.SerializeObject(receipe);
+            StringContent Content = new StringContent(data, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = client.PutAsync(baseAddress + "/Recipe/" + receipe.RId, Content).Result;
+            if (response.IsSuccessStatusCode)
             {
-                db.Entry(receipe).State = EntityState.Modified;
-                db.SaveChanges();
                 return RedirectToAction("Index");
             }
+
             return View(receipe);
         }
 
         // GET: Admin/Delete/5
         public ActionResult Delete(int? id)
         {
-            Logged l = lmethods.TempName();
-            TempData["A1"] = l.Name;
-            if (TempData["A1"] != null)
+            Receipe r = new Receipe();
+            HttpResponseMessage response = client.DeleteAsync(baseAddress + "/Recipe/" + id).Result;
+            if (response.IsSuccessStatusCode)
             {
-                if (id == null)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
-                Receipe receipe = db.Receipes.Find(id);
-                if (receipe == null)
-                {
-                    return HttpNotFound();
-                }
-                return View(receipe);
+                return RedirectToAction("Index");
             }
             return View();
         }
 
-        // POST: Admin/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Receipe receipe = db.Receipes.Find(id);
-            db.Receipes.Remove(receipe);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
     }
 }

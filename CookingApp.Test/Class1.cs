@@ -1,5 +1,6 @@
 ﻿using Cooking_App;
 using Cooking_App.Models;
+using Cooking_WebApi.Models;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;

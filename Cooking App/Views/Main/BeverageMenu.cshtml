@@ -1,4 +1,4 @@
-﻿@model Cooking_App.Models.Receipe
+﻿@model Cooking_WebApi.Models.Receipe
 
 <html>
 <head>
@@ -20,7 +20,7 @@
     <div class="container-fluid" style="margin-top:20px;">
         <div class="row">
 
-            @foreach (Cooking_App.Models.Receipe m in ViewBag.List)
+            @foreach (Cooking_WebApi.Models.Receipe m in ViewBag.List)
             {
                 <div class="col-md-4" style="margin-top:20px">
                     <div class="card" style="width: 18rem;border-radius:4px 4px">

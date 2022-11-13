@@ -68,6 +68,10 @@
       <Project>{5234af91-3887-42dd-899a-d75c97d15e61}</Project>
       <Name>Cooking App</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Cooking_WebApi\Cooking_WebApi.csproj">
+      <Project>{4EEC7D0E-8E34-419E-A810-FA42A9DCBA86}</Project>
+      <Name>Cooking_WebApi</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
