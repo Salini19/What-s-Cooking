@@ -154,13 +154,16 @@
             </div>
         </div>
     }
-    
-        @if (ViewBag.Message != null)
-        {
-            <script type="text/javascript">alert("Confirm password and password should be same");</script>
-        }
+
+    @if (ViewBag.Message != null)
+    {
+        
+        <script type="text/javascript">alert("Confirm password and password should be same");</script>
+    }
 
     <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 
 </body>
 </html>

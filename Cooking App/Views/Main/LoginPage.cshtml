@@ -11,18 +11,19 @@
         ViewBag.Title = "LoginPage";
     }*@
 
-<html>
+<html >
 <head>
     <title>Login Page</title>
     <link href="~/Content/LoginPage.css" rel="stylesheet" />
 </head>
-<body>
+<body style="background-image: url('../../image/bg3.jpg'); background-repeat: no-repeat; background-attachment: fixed;
+  background-size: cover;" >
 
     @*@{Html.BeginForm();}*@
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
-        <div class="container-fluid" style="margin-top:100px;margin-bottom:90px;">
+        <div class="container-fluid" style="margin-top: 100px; margin-bottom: 90px;" >
             <div class="row" id="log">
                 <div class="col-md-2"></div>
                 <div class="col-md-7">

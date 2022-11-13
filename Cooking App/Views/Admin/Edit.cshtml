@@ -73,8 +73,8 @@
                         @Html.LabelFor(model => model.Photo, htmlAttributes: new { @class = "control-label" })
                         <div class="form-group">
                             <div>
-                                <img src=""/>
-                                <input type="file" placeholder="@Html.DisplayFor(model => model.Photo)" value="@Html.DisplayFor(model => model.Photo)" name="ImageFile" required />
+                                
+                                <input type="file" placeholder="@Html.DisplayFor(model => model.Photo)" value="~/RecipeImg/@Html.DisplayFor(model => model.Photo)" name="ImageFile" required />
                             </div>
                         </div>
 

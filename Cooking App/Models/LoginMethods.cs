@@ -17,38 +17,6 @@ namespace Cooking_App
                 food = new FoodReceipesEntities();
         }
        
-        public int Feedback(string name, string email, string msg)
-        {
-            FeedBack f = new FeedBack();
-            f.Name = name;
-            f.Email = email;
-            f.Msg = msg;
-
-            try
-            {
-                food.FeedBacks.Add(f);
-                food.SaveChanges();
-                return 1;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
-        public List<FeedBack> FeedbackInfo()
-        {
-            var list = food.FeedBacks.Take(3).ToList();
-            return list;
-                   
-        }
-        public List<FeedBack> AllFeedbackInfo()
-        {
-            var list = food.FeedBacks.OrderByDescending(x => x.Email).ToList();
-            return list;
-        }
-
-
         public bool Save(Login l)
         {
             

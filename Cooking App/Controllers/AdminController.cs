@@ -14,6 +14,8 @@ namespace Cooking_App.Controllers
 {
     public class AdminController : Controller
     {
+
+
         private FoodReceipesEntities db = new FoodReceipesEntities();
         LoginMethods lmethods = new LoginMethods();
 
@@ -112,14 +114,8 @@ namespace Cooking_App.Controllers
             receipe.Photo = "../RecipeImg/" + FileName;
             FileName = Path.Combine(Server.MapPath("../RecipeImg/"), FileName);
 
-            //Get Upload path from Web.Config file AppSettings.  
             
-
-            //Its Create complete path to store in server.  
-           
-
-            //To copy and save file into server.  
-            receipe.ImageFile.SaveAs(receipe.Photo);
+            receipe.ImageFile.SaveAs(FileName);
 
             Receipe r = new Receipe();
             r.RName = receipe.RName;

@@ -7,27 +7,16 @@
 </head>
 <body>
 
-    <div class="container-fluid" style="margin-top:20px">
+    <div class="container-fluid" style="margin-top:20px;">
         <div class="row">
             <div class="col-md-4">
-                <a id="backme" href="~/Main/VNBMenu">  Goto MainMenu</a>
+                <button class="btn btn-primary">@Html.ActionLink("Goto Main Menu", "VNBMenu", "Main")</button>
             </div>
-            <div class="col-md-1"></div>
-            <div class="col-md-2">
-                <h3 style="color:blue;font-weight:600">@ViewBag.Vnb</h3>
+            <div class="col-md-4">
+                <h2 style="color:darkblue"><b>Beverage</b></h2>
             </div>
-            <div class="col-md-3">
-                <button type="button" style="margin-left:50px" class="button" data-bs-toggle="modal" data-bs-target="#testmodal1">
-                    <span class="button__text">Add New</span>
-                    <span class="button__icon">
-                        <ion-icon name="add-circle-outline"></ion-icon>
-                    </span>
-                </button>
-            </div>
-           
         </div>
     </div>
-
     <div class="container-fluid" style="margin-top:20px;">
         <div class="row">
 
@@ -35,7 +24,7 @@
             {
                 <div class="col-md-4" style="margin-top:20px">
                     <div class="card" style="width: 18rem;border-radius:4px 4px">
-                        <img src="~/NewlyAddedImg/@m.Photo" class="card-img-top" alt="...">
+                        <img src="~/RecipeImg/@m.Photo" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h3 class="card-title" style="font-weight:500;color:blue">@m.RName</h3>
                         </div>
@@ -47,3 +36,5 @@
             }
         </div>
     </div>
+    </body>
+</html>

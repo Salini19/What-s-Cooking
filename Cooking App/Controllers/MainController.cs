@@ -17,39 +17,61 @@ namespace Cooking_App.Controllers
         // GET: Main
         ReceipeMethods methods = null;
         LoginMethods lmethods = null;
+        FoodReceipesEntities food = null;
         public MainController()
         {
             methods = new ReceipeMethods();
             lmethods = new LoginMethods();
+            food = new FoodReceipesEntities();
         }
 
 
         public ActionResult MainPage()
         {
+            try
+            {
+                ViewBag.Id = food.Logins.Count();
+                ViewBag.Rid = food.Receipes.Count();
+                TempData["T1"] = null;
+                TempData["M1"] = "MainPage";
+                lmethods.DeleteLogged();
+                ViewBag.FeedList = food.FeedBacks.Take(3).ToList();
+                return View();
+            }
+            catch (Exception)
+            {
 
-            ViewBag.Id = methods.GetCountId();
-            ViewBag.Rid = methods.GetCountRId();
-            TempData["T1"] = null;
-            TempData["M1"] = "MainPage";
-            lmethods.DeleteLogged();
-            ViewBag.FeedList = lmethods.FeedbackInfo();
-            return View();
-
+                throw;
+            }
 
         }
         [HttpPost]
         public ActionResult MainPage(string name, string email, string msg)
         {
-            int res = lmethods.Feedback(name, email, msg);
-            ViewBag.FeedList = lmethods.FeedbackInfo();
-            return View();
+            try
+            {
+                FeedBack f = new FeedBack();
+                f.Name = name;
+                f.Email = email;
+                f.Msg = msg;
+                food.FeedBacks.Add(f);
+                food.SaveChanges();
+                ViewBag.FeedList = food.FeedBacks.Take(3).ToList();
+                return View();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
 
         }
 
 
         public ActionResult FeedbackPage()
         {
-            ViewBag.FeedList = lmethods.AllFeedbackInfo();
+            ViewBag.FeedList = food.FeedBacks.ToList();
             return View();
         }
 
@@ -240,27 +262,11 @@ namespace Cooking_App.Controllers
             lmethods.Temporaryvnb(l.Name, id);
 
             State m = new State();
+           
             ViewBag.List = methods.GetBeverageList(id);
             return View();
         }
-        public ActionResult Delete(int id)
-        {
-            int res = methods.Delete(id);
-            if (res == 1)
-                return RedirectToAction("Modify");
-            return View();
-        }
-
-
-        // Delete Beverage Action
-
-        public ActionResult DeleteBeverage(int id)
-        {
-            int res = methods.Delete(id);
-            if (res == 1)
-                return RedirectToAction("ModifyBeverage");
-            return View();
-        }
+        
     
         public ActionResult Profile()
         {

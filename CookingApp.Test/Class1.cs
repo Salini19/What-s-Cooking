@@ -1,0 +1,70 @@
+﻿using Cooking_App;
+using Cooking_App.Models;
+using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CookingApp.Test
+{
+
+    [TestFixture]
+    public class ReceipeTest
+    {
+        ReceipeMethods methods = new ReceipeMethods();
+
+
+        [TestCase(1,ExpectedResult =false)]
+        [TestCase(6,ExpectedResult =true)]
+        public bool CheckRecipeExist(int id)
+        {
+            bool ans = methods.RecipeExists(id);
+
+            return ans;
+        }
+
+        [TestCase]
+        public void AddRecipe()
+        {
+            Receipe r = new Receipe();
+            r.RName = "Chicken Tikka";
+            r.VNB = "Non Veg";
+            r.State = "Kerala";
+            r.Youtube = "https://www.youtube.com/watch?v=6No7g2GptXY";
+            r.Ingredient = "Chicken,Tomato,Ginger";
+            r.HTM = "Follow the steps in Youtube Link";
+            r.Photo = "33b35bac-5c13-4f2c-b388-956dad317166_CardU2.jpg";
+
+           bool ans= methods.Insert(r);
+            Assert.AreEqual(true, ans);
+        }
+
+        [TestCase]
+        public void UpdateRecipe()
+        {
+            Receipe r = new Receipe();
+            r.RName = "Chicken Tikka";
+            r.VNB = "Non Veg";
+            r.State = "TamilNadu";
+            r.Youtube = "https://www.youtube.com/watch?v=6No7g2GptXY";
+            r.Ingredient = "Chicken,Tomato,Ginger";
+            r.HTM = "Follow the steps in Youtube Link";
+            r.Photo = "33b35bac-5c13-4f2c-b388-956dad317166_CardU2.jpg";
+
+            bool ans = methods.Update(r);
+
+            Assert.AreEqual(true, ans);
+        }
+        [TestCase]
+        public void DeleteRecipe()
+        {
+           bool ans= methods.Delete(9);
+            Assert.AreEqual(true, ans);
+        }
+
+
+    }
+    
+}
