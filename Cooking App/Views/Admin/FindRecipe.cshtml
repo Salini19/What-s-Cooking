@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Cooking_WebApi.Models.Receipe>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.RName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Photo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Youtube)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Ingredient)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HTM)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VNB)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.State)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.RName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Photo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Youtube)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Ingredient)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HTM)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.VNB)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.State)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.RId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.RId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.RId })
+        </td>
+    </tr>
+}
+
+</table>

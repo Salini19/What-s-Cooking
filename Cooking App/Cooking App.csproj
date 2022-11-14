@@ -239,10 +239,7 @@
     <Content Include="NewlyAddedImg\fac1e5a3-888e-4e36-9195-ddc711ab7766_Komal Gujrati Chass.jpg" />
     <Content Include="ProfileImages\138662a5-9488-4225-93bd-a787faa796c2_Card3.jpg" />
     <Content Include="ProfileImages\2dd559d6-c1f9-4b56-bfc7-23c54fdfa28c_Emperor Ashoka the Great.jpg" />
-    <Content Include="ProfileImages\4c2aa60a-58fc-49d8-ad59-e30e2221dc63_Photo.jpg" />
     <Content Include="ProfileImages\8c74774d-59d6-47fe-a53d-a444f07f8593_Card3.jpg" />
-    <Content Include="ProfileImages\a598caa6-7244-478c-adb3-f058c9a87e6f_7.JPG" />
-    <Content Include="ProfileImages\fa58aa18-7661-419d-96db-3cd02b436b5a_Pdf068.jpg" />
     <Content Include="ProfileImages\Profile.jpg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -291,6 +288,9 @@
     <Content Include="Views\Main\BeverageMenu.cshtml" />
     <Content Include="Views\Admin\LoginPage.cshtml" />
     <Content Include="Views\Admin\LogOut.cshtml" />
+    <Content Include="Views\Admin\FindRecipe.cshtml" />
+    <Content Include="Views\Admin\GetList.cshtml" />
+    <Content Include="Views\Main\GetList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

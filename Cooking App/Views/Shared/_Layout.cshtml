@@ -25,7 +25,7 @@
                 <div class="carousel-inner">
                     <div class="carousel-item active" data-bs-interval="10000">
                         <img src="~/Image/VegMain.jpg" class="d-block w-100" alt="...">
-                        <div class="carousel-caption d-none d-md-block">
+                        <div class="carousel-caption d-none d-md-block justify-content-end">
                             <h1>Special Veg Thali's</h1>
                         </div>
                     </div>
@@ -75,20 +75,25 @@
                             <li class="nav-link" style="color: #FDFEFE;font-size: 19px;">@Html.ActionLink("Main Menu", "VNBMenu", "Main")</li>
 
 
+                           
+
+                            <li class="nav-link" style="color: #FDFEFE;font-size: 19px;">  @Html.ActionLink("Explore", "GetList", "Main")</li>
+
+                            
 
                             <a class="nav-link" href="~/Main/Profile">&nbsp;Hey, @TempData["T1"] !</a>
 
 
 
 
-                            <form class="form-inline">
-                                <input class="form-control mr-sm-2" type="search" placeholder="Find Recipe" aria-label="Search">
-                                <button class="btn btn-outline-success my-2 my-sm-0 " type="submit">Search</button>
-                            </form>
+
                         </ul>
                         <ul class="nav-link navbar-right">
+
+                            
+
                             <li style="color: #FDFEFE;font-size: 19px;"><span class="glyphicon glyphicon-log-in"></span>  @Html.ActionLink("LogOut", "LogOut", "Main")</li>
-                           
+
                         </ul>
                     </div>
                 </div>

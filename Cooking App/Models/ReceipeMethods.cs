@@ -15,53 +15,7 @@ namespace Cooking_App
     public class ReceipeMethods
     {
         FoodReceipesEntities food = new FoodReceipesEntities();
-        public int GetCountId()
-        {
-            return food.Logins.Count();
-        }
-        public int GetCountRId()
-        {
-
-            return food.Receipes.Count();
-        }
-      
-        public List<Receipe> GetAllProducts(string sname, string vnb)
-        {
-            var list = food.Receipes.ToList();
-            List<Receipe> list1 = list.FindAll(x => x.State == sname && x.VNB == vnb);
-
-            return list1;
-
-        }
-      
-        public Receipe GetInfo(int id)
-        {
-            var list = food.Receipes.ToList();
-            Receipe receipe = list.Find(x => x.RId == id);
-
-            return receipe;
-        }
-
-        public List<State> GetAllState(string vnb)
-        {
-            List<String> list= food.Receipes.Where(x => x.VNB == vnb).Select(m => m.State).Distinct().ToList();
-            List<State> slist = new List<State>();
-            foreach (var item in list)
-            {
-                slist.Add(new State {Sname = item });
-            }
-            return slist;  
-           
-        }
-        public List<Receipe> GetBeverageList(string vnb)
-        {
-            var list = food.Receipes.ToList();
-            List<Receipe> list1 = list.FindAll(x => x.VNB == vnb);
-            return list1;
-
-        }
-
-        //For Testing
+        //For Nnit Testing
 
         public bool Insert(Receipe m)
         {
@@ -117,8 +71,14 @@ namespace Cooking_App
             {
                 var list = food.Receipes.ToList();
                 Receipe found = list.Find(x => x.RId == m.RId);
-                food.Receipes.Remove(found);
-                food.Receipes.Add(m);
+                found.RId = m.RId;
+                found.RName = m.RName;
+                found.State = m.State;
+                found.VNB = m.VNB;
+                found.Youtube = m.Youtube;
+                found.HTM = m.HTM;
+                found.Photo = m.Photo;
+                found.Ingredient = m.Ingredient;
                 food.SaveChanges();
                 return true;
             }

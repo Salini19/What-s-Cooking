@@ -229,6 +229,8 @@ namespace Cooking_App.Controllers
             return View(receipe);
         }
 
+
+
         // GET: Admin/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -240,6 +242,27 @@ namespace Cooking_App.Controllers
             }
             return View();
         }
+
+
+        public ActionResult FindRecipe(string searchstring)
+        {
+            List<Receipe> list = new List<Receipe>();
+            HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/Recipe").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                String Data = response.Content.ReadAsStringAsync().Result;
+                list = JsonConvert.DeserializeObject<List<Receipe>>(Data);
+            }
+            List<Receipe> rlist = list.Where(x => x.RName.Contains(searchstring) || x.Ingredient.Contains(searchstring) || x.HTM.Contains(searchstring)).ToList();
+
+            return View(rlist);
+
+        }
+
+
+      
+
+
 
     }
 }

@@ -17,8 +17,8 @@ namespace CookingApp.Test
         ReceipeMethods methods = new ReceipeMethods();
 
 
-        [TestCase(1,ExpectedResult =false)]
-        [TestCase(6,ExpectedResult =true)]
+        [TestCase(11,ExpectedResult =false)]
+        [TestCase(17,ExpectedResult =true)]
         public bool CheckRecipeExist(int id)
         {
             bool ans = methods.RecipeExists(id);
@@ -33,10 +33,10 @@ namespace CookingApp.Test
             r.RName = "Chicken Tikka";
             r.VNB = "Non Veg";
             r.State = "Kerala";
-            r.Youtube = "https://www.youtube.com/watch?v=6No7g2GptXY";
+            r.Youtube = "https://www.youtube.com/embed/6No7g2GptXY";
             r.Ingredient = "Chicken,Tomato,Ginger";
             r.HTM = "Follow the steps in Youtube Link";
-            r.Photo = "33b35bac-5c13-4f2c-b388-956dad317166_CardU2.jpg";
+            r.Photo = "../RecipeImg/33b35bac-5c13-4f2c-b388-956dad317166_CardU2.jpg";
 
            bool ans= methods.Insert(r);
             Assert.AreEqual(true, ans);
@@ -46,13 +46,14 @@ namespace CookingApp.Test
         public void UpdateRecipe()
         {
             Receipe r = new Receipe();
+            r.RId = 21;
             r.RName = "Chicken Tikka";
             r.VNB = "Non Veg";
             r.State = "TamilNadu";
-            r.Youtube = "https://www.youtube.com/watch?v=6No7g2GptXY";
+            r.Youtube = "https://www.youtube.com/embed/6No7g2GptXY";
             r.Ingredient = "Chicken,Tomato,Ginger";
             r.HTM = "Follow the steps in Youtube Link";
-            r.Photo = "33b35bac-5c13-4f2c-b388-956dad317166_CardU2.jpg";
+            r.Photo = "../RecipeImg/33b35bac-5c13-4f2c-b388-956dad317166_CardU2.jpg";
 
             bool ans = methods.Update(r);
 
@@ -61,8 +62,8 @@ namespace CookingApp.Test
         [TestCase]
         public void DeleteRecipe()
         {
-           bool ans= methods.Delete(9);
-            Assert.AreEqual(true, ans);
+           bool ans= methods.Delete(21);
+           Assert.AreEqual(true, ans);
         }
 
 

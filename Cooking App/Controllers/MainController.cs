@@ -185,7 +185,7 @@ namespace Cooking_App.Controllers
             Login u = new Login();
             string fname = form["fname"];
             string lname = form["lname"];
-            string FullName = string.Empty;
+            string FullName = null;
             if (fname != null)
             {
                 FullName = fname + " " + lname;
@@ -425,7 +425,9 @@ namespace Cooking_App.Controllers
               
             return View(m);
         }
+        //===============================================================================================
 
+        //Beverage
         
         public ActionResult BeverageMenu(string id)
         {
@@ -460,10 +462,52 @@ namespace Cooking_App.Controllers
 
          
         }
-        
-    
-       
 
-       
+
+        //=======================================================================================
+
+        //Find Recipe
+
+        public ActionResult GetList()
+        {
+            Login u = new Login();
+            Logged l = lmethods.TempName();
+            u = lmethods.GetName(l.Name, l.Password);
+            TempData["T1"] = u.UserName;
+            if (TempData["T1"]!=null)
+            {
+                List<Receipe> list = new List<Receipe>();
+                HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/Recipe").Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    String Data = response.Content.ReadAsStringAsync().Result;
+                    list = JsonConvert.DeserializeObject<List<Receipe>>(Data);
+                }
+                return View(list);
+            }
+
+            return View();
+
+        }
+        [HttpPost]
+        public ActionResult GetList(string searchstring)
+        {
+            if (searchstring != null)
+            {
+                List<Receipe> list = new List<Receipe>();
+                HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/Recipe").Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    String Data = response.Content.ReadAsStringAsync().Result;
+                    list = JsonConvert.DeserializeObject<List<Receipe>>(Data);
+                }
+                List<Receipe> rlist = list.Where(x => x.RName.Contains(searchstring)).ToList();
+
+                return View(rlist);
+            }
+            return View();
+        }
+
+
     }
 }

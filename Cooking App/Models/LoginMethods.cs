@@ -18,42 +18,6 @@ namespace Cooking_App
                 food = new FoodReceipesEntities();
         }
        
-        public bool Save(Login l)
-        {
-            
-            try
-            {
-                food.Logins.Add(l);
-                food.SaveChanges();
-                return true;
-            }
-            catch (Exception )
-            {
-                return false;
-            }
-            
-        }
-       
-
-        // Forget Password Query
-        public int ForgetPassword(string email, DateTime date, string pass)
-        {
-            var list = food.Logins.ToList();
-            Login u = list.Find(x => x.Email == email);
-            if (u!=null)
-            {
-                if (u.DOB==date)
-                {
-                    u.Password = pass;
-                    food.SaveChanges();
-                    return 1;
-                }
-
-            }
-            return 0; 
-        }
-
-      
 
         // Find Name Query
         public Login GetName(string email, string pass)
@@ -63,6 +27,9 @@ namespace Cooking_App
             return u;
         }
 
+        //logged methods
+
+        //add username and pass to logged table
         public int Temporary(string Email, string Password)
         {
             Logged l = new Logged();
@@ -82,7 +49,7 @@ namespace Cooking_App
            
         }
 
-        // After Logged Query
+        // store vnb in logged table
         public int Temporaryvnb(string Email, string vnb)
         {
             int res = 0;
@@ -108,10 +75,9 @@ namespace Cooking_App
                 throw;
             }
             return res;
-           
-
-           
         }
+
+        //store state in logged table
         public int Temporarystate(string Email, string sname)
         {
 
@@ -137,10 +103,10 @@ namespace Cooking_App
 
                 throw;
             }
-            return res;
-            
+            return res;        
            
         }
+
         public Logged TempName()
         {
           
@@ -163,41 +129,13 @@ namespace Cooking_App
             food.SaveChanges();
         }
 
-        public Login GetInfoProfile(int id)
-        {
-            var List = food.Logins.ToList();
-            Login l = List.Find(x => x.Id == id);
-            return l;
-        }
-
-
-        public bool UpdateProfile(Login l)
-        {
-            try
-            {
-                var list = food.Logins.ToList();
-                Login found = list.Find(x => x.Id == l.Id);
-                found.Id = l.Id;
-                found.Email = l.Email;
-                found.Password = l.Password;
-                found.Profession = l.Profession;
-                found.City = l.City;
-                found.DOB = l.DOB;
-                found.MobileNumber = l.MobileNumber;
-                found.UserName = l.UserName;
-                found.Gender = l.Gender;
-
-                food.SaveChanges();
-
-                return true;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-        }
+        //public Login GetInfoProfile(int id)
+        //{
+        //    var List = food.Logins.ToList();
+        //    Login l = List.Find(x => x.Id == id);
+        //    return l;
+        //}
+       
     }
 
 }
