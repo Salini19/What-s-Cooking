@@ -33,13 +33,7 @@ namespace Cooking_App
             }
             
         }
-        public bool Search(string user, string pass)
-        {
-           
-            var list = food.Logins.ToList();
-            bool ans=list.Any(x => x.Email == user && x.Password==pass );
-            return ans;        
-        }
+       
 
         // Forget Password Query
         public int ForgetPassword(string email, DateTime date, string pass)

@@ -66,7 +66,7 @@
                     <div class="collapse navbar-collapse" id="loged">
 
 
-                        <ul class="navbar-nav ">
+                        <ul class="navbar-nav">
 
 
                             <span class="navbar-brand" href="#" style="color: #F1C40F; font-size: 25px;font-weight:600  ">Whats Cooking</span>
@@ -85,12 +85,10 @@
                                 <input class="form-control mr-sm-2" type="search" placeholder="Find Recipe" aria-label="Search">
                                 <button class="btn btn-outline-success my-2 my-sm-0 " type="submit">Search</button>
                             </form>
-                            <li class="nav-link" style="color: #FDFEFE;font-size: 19px;">
-                                @Html.ActionLink("LogOut", "LogOut", "Main")
-                            </li>
-
-
-
+                        </ul>
+                        <ul class="nav-link navbar-right">
+                            <li style="color: #FDFEFE;font-size: 19px;"><span class="glyphicon glyphicon-log-in"></span>  @Html.ActionLink("LogOut", "LogOut", "Main")</li>
+                           
                         </ul>
                     </div>
                 </div>
@@ -110,19 +108,23 @@
 
 
                         <ul class="navbar-nav">
-                            <span class="navbar-brand" href="#" style="color: #F1C40F; font-size: 25px;font-weight:600 ">Whats Cooking</span>
 
+                            <span class="navbar-brand" href="#" style="color: #F1C40F; font-size: 25px;font-weight:600 ">Whats Cooking</span>
                             <li class="nav-link" style="color: #FDFEFE;font-size: 19px;">@Html.ActionLink("Main Menu", "Index", "Admin")</li>
 
 
 
                             <a class="nav-link" style="color: #FDFEFE;font-size: 19px;" href="#">&nbsp;Hey, @TempData["A1"] !</a>
 
-                            <li class="nav-link" style="color: #FDFEFE;font-size: 19px;margin-left:1000px">
-                                @Html.ActionLink("Logout", "LogOut", "Admin")
-                            </li>
+
+
+                            
+                        </ul>
+                        <ul class="nav-link navbar-right">
+                            <li style="color: #FDFEFE;font-size: 19px;"><span class="glyphicon glyphicon-log-in"></span>  @Html.ActionLink("Logout", "LogOut", "Admin")</li>
 
                         </ul>
+
                     </div>
                 </div>
             </nav>
@@ -141,7 +143,7 @@
                     <div class="collapse navbar-collapse">
                         <span class="navbar-brand" href="#" style="color: #F1C40F; font-size: 25px;font-weight:600 ">Whats Cooking</span>
 
-                        <div class="navbar-nav" id="navbarNavAltMarkup" style="margin-left:500px">
+                        <div class="navbar-nav justify-content-end" id="navbarNavAltMarkup" >
 
                             <a class="nav-link" href="~/Main/MainPage">Home</a>
 
