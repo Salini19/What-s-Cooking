@@ -1,5 +1,5 @@
 ﻿
-
+@model IEnumerable<Cooking_App.Models.State>
 @{
     ViewData["Title"] = "StateWiseMenu Page";
 }
@@ -11,8 +11,8 @@
     <div class="container-fluid" style="margin-top:20px;">
         <div class="row">
             <div class="col-md-4">
-                <button  class="btn btn-primary" >@Html.ActionLink("Goto Main Menu","VNBMenu","Main")</button>
-            </div>       
+                <button class="btn btn-primary">@Html.ActionLink("Goto Main Menu", "VNBMenu", "Main")</button>
+            </div>
             <div class="col-md-4">
                 <h2 style="color:darkblue"><b>State Wise Menu</b></h2>
             </div>
@@ -20,7 +20,8 @@
     </div>
     <div class="container-fluid" style="margin-top:10px;">
         <div class="row">
-            @foreach (Cooking_App.Models.State m in ViewBag.StateList)
+            @*@foreach (Cooking_App.Models.State m in ViewBag.StateList)*@
+            @foreach(var m in Model)
             {
                 <div class="col-sm-4">
                     <div class="card" style="margin-top:15px;">
@@ -35,7 +36,7 @@
         </div>
     </div>
 
-   
+
 
 
     <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>

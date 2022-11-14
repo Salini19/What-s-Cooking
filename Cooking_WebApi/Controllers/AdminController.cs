@@ -20,7 +20,9 @@ namespace Cooking_WebApi.Controllers
         // GET api/<controller>/5
         public Admin Get(int id)
         {
-            return food.Admins.ToList().Find(x => x.Adminid == id);
+            List<Admin> list = food.Admins.ToList();
+            Admin a=  list.Find(x => x.Adminid == id);
+            return a;
         }
 
         // POST api/<controller>

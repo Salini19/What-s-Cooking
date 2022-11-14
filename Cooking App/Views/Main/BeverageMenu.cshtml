@@ -1,8 +1,7 @@
-﻿@model Cooking_WebApi.Models.Receipe
-
+﻿@model IEnumerable < Cooking_WebApi.Models.Receipe>
 <html>
 <head>
-
+    >
     <link href="~/Content/StateWiseMenu.css" rel="stylesheet" />
 </head>
 <body>
@@ -20,7 +19,8 @@
     <div class="container-fluid" style="margin-top:20px;">
         <div class="row">
 
-            @foreach (Cooking_WebApi.Models.Receipe m in ViewBag.List)
+            @*@foreach (Cooking_WebApi.Models.Receipe m in ViewBag.List)*@
+            @foreach (var m in Model)
             {
                 <div class="col-md-4" style="margin-top:20px">
                     <div class="card" style="width: 18rem;border-radius:4px 4px">
@@ -36,5 +36,5 @@
             }
         </div>
     </div>
-    </body>
+</body>
 </html>

@@ -82,9 +82,7 @@ namespace Cooking_App.Controllers
         }
         [HttpPost]
         public ActionResult MainPage(string name, string email, string msg)
-        {
-            
-            
+        {          
             try
             {
                 FeedBack f = new FeedBack();
@@ -98,7 +96,14 @@ namespace Cooking_App.Controllers
                 HttpResponseMessage response=client.PostAsync(client.BaseAddress + "/Feedback", content).Result;
                 if (response.IsSuccessStatusCode)
                 {
-                    //ViewBag.FeedList = flist.Take(3);
+                    List<FeedBack> flist = new List<FeedBack>();
+                    HttpResponseMessage response2 = client.GetAsync(client.BaseAddress + "/Feedback").Result;
+                    if (response2.IsSuccessStatusCode)
+                    {
+                        String Data = response2.Content.ReadAsStringAsync().Result;
+                        flist = JsonConvert.DeserializeObject<List<FeedBack>>(Data);
+                    }
+                    ViewBag.FeedList = flist.Take(3);
                     return View();
                 }
                 return View();
@@ -154,7 +159,7 @@ namespace Cooking_App.Controllers
            
                 Login u = list.Find(x => x.Email == l.Email && x.Password == l.Password);
                 TempData["T1"] = u.UserName;
-                lmethods.Temporary(l.Email, l.Password);
+                lmethods.Temporary(l.Email, l.Password); ///to store the email ans pass in looged table..  
                 TempData["sucess"] = "success";
                 return RedirectToAction("VNBMenu");
             }
@@ -269,6 +274,50 @@ namespace Cooking_App.Controllers
             return RedirectToAction("MainPage");
         }
 
+
+        public ActionResult Profile()
+        {
+            Login u = new Login();
+            Logged l = lmethods.TempName();
+            u = lmethods.GetName(l.Name, l.Password);
+            TempData["T1"] = u.UserName;
+            int id = u.Id;
+
+            Login p = new Login();
+
+            HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/User/" + id).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                String Data = response.Content.ReadAsStringAsync().Result;
+                p = JsonConvert.DeserializeObject<Login>(Data);
+            }
+
+            return View(p);
+        }
+        [HttpPost]
+        public ActionResult Profile(Login l)
+        {
+
+            string data = JsonConvert.SerializeObject(l);
+            StringContent Content = new StringContent(data, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = client.PutAsync(baseAddress + "/User/" + l.Id, Content).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                ViewBag.profile = "Profile Updated Successfully";
+                return RedirectToAction("VNBMenu");
+            }
+
+
+
+            return View();
+        }
+
+
+
+
+       // ====================================================================================================
+
+        //Recipe View for User
         public ActionResult VNBMenu()
         {
 
@@ -305,9 +354,9 @@ namespace Cooking_App.Controllers
                 {
                     slist.Add(new State { Sname = item });
                 }
-                ViewBag.StateList = slist;
+            
 
-                return View();
+                return View(slist);
             }
             catch (Exception)
             {
@@ -344,9 +393,9 @@ namespace Cooking_App.Controllers
 
                 List<Receipe> list1 = rlist.FindAll(x => x.State == id && x.VNB == l.Vnb);
 
-                ViewBag.List = list1;
+             
 
-                return View();
+                return View(list1);
             }
             catch (Exception)
             {
@@ -372,14 +421,9 @@ namespace Cooking_App.Controllers
                 m = JsonConvert.DeserializeObject<Receipe>(Data);
             }
 
-            ViewBag.Rname = m.RName;   
             ViewBag.Vnb = m.VNB;        
-            ViewBag.State = m.State;
-            ViewBag.Photo = m.Photo;
-            ViewBag.Youtube = m.Youtube;
-            ViewBag.Ingredient = m.Ingredient;
-            ViewBag.Htm = m.HTM;      
-            return View();
+              
+            return View(m);
         }
 
         
@@ -404,9 +448,9 @@ namespace Cooking_App.Controllers
 
                 List<Receipe> list1 = rlist.FindAll(x =>  x.VNB == id);
 
-                ViewBag.List = list1;
+                //ViewBag.List = list1;
 
-                return View();
+                return View(list1);
             }
             catch (Exception)
             {
@@ -418,42 +462,7 @@ namespace Cooking_App.Controllers
         }
         
     
-        public ActionResult Profile()
-        {
-            Login u = new Login();
-            Logged l = lmethods.TempName();
-            u = lmethods.GetName(l.Name, l.Password);
-            TempData["T1"] = u.UserName;
-            int id = u.Id;
-
-            Login p = new Login();
-
-            HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/User/"+id).Result;
-            if (response.IsSuccessStatusCode)
-            {
-                String Data = response.Content.ReadAsStringAsync().Result;
-                p = JsonConvert.DeserializeObject<Login>(Data);
-            }
-
-            return View(p);
-        }
-        [HttpPost]
-        public ActionResult Profile(Login l)
-        {
-
-            string data = JsonConvert.SerializeObject(l);
-            StringContent Content = new StringContent(data, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = client.PutAsync(baseAddress + "/User/" + l.Id, Content).Result;
-            if (response.IsSuccessStatusCode)
-            {
-                ViewBag.profile = "Profile Updated Successfully";
-                return RedirectToAction("VNBMenu");
-            }
-            
-             
-           
-            return View();
-        }
+       
 
        
     }

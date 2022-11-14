@@ -11,6 +11,7 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using Cooking_App.Models;
+using Cooking_WebApi.Controllers;
 using Cooking_WebApi.Models;
 using Newtonsoft.Json;
 
@@ -152,7 +153,7 @@ namespace Cooking_App.Controllers
 
             Receipe r = new Receipe();
             r.RName = receipe.RName;
-            r.Photo = FileName;
+            r.Photo = receipe.Photo;
             string youtube = receipe.Youtube;
             youtube = youtube.Replace("watch?v=", "embed/");
             r.Youtube = youtube;

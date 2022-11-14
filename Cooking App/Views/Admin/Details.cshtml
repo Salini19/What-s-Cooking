@@ -1,4 +1,4 @@
-﻿@model Cooking_App.Models.Receipe
+﻿@model Cooking_WebApi.Models.Receipe
 
 @{
     ViewBag.Title = "Details";
@@ -20,7 +20,7 @@
             </div>
             <div class="col-md-5"></div>
             
-            <div class="col-md-2">
+            <div class="col-md-3">
 
                 <button class="nav-link btn btn-success" style=" color:aliceblue; border-radius: 4px 5px;padding:10px;">@Html.ActionLink("Modify", "Edit", new { @id = Model.RId })</button>
                 <button class="nav-link btn btn-danger" style="border-radius: 4px 5px;padding:10px;">@Html.ActionLink("Delete", "Delete", new { @id = Model.RId })</button>
