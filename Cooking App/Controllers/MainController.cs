@@ -597,6 +597,10 @@ namespace Cooking_App.Controllers
         [HttpPost]
         public ActionResult GetList(string searchstring)
         {
+            Login u = new Login();
+            Logged l = lmethods.TempName();
+            u = lmethods.GetName(l.Name, l.Password);
+            TempData["T1"] = u.UserName;
             if (searchstring != null)
             {
                 List<Receipe> list = new List<Receipe>();

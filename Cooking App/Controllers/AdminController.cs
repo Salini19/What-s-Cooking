@@ -57,7 +57,7 @@ namespace Cooking_App.Controllers
             if (ans)
             {            
                 TempData["A1"] = u.Username;
-                lmethods.Temporary(u.Email, u.Password);
+                lmethods.Temporary(u.Username, u.Password);
                 TempData["sucess"] = "success";
                 return RedirectToAction("Index");
             }
