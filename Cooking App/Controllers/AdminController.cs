@@ -214,10 +214,31 @@ namespace Cooking_App.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "RId,RName,Photo,Youtube,Ingredient,HTM,VNB,State")] Receipe receipe)
+        public ActionResult Edit(Receipe receipe)
         {
-            
-            string data = JsonConvert.SerializeObject(receipe);
+            //string FileName = Path.GetFileNameWithoutExtension(receipe.ImageFile.FileName);
+
+            //string FileExtension = Path.GetExtension(receipe.ImageFile.FileName);
+
+            //FileName = FileName + DateTime.Now.ToString("yymmssfff") + FileExtension;
+            //receipe.Photo = "../RecipeImg/" + FileName;
+            //FileName = Path.Combine(Server.MapPath("../RecipeImg/"), FileName);
+
+
+            //receipe.ImageFile.SaveAs(FileName);
+
+            Receipe r = new Receipe();
+            r.RName = receipe.RName;
+            r.Photo = "../RecipeImg/" + receipe.Photo;
+            string youtube = receipe.Youtube;
+            youtube = youtube.Replace("watch?v=", "embed/");
+            r.Youtube = youtube;
+            r.HTM = receipe.HTM;
+            r.Ingredient = receipe.Ingredient;
+            r.State = receipe.State;
+            r.VNB = receipe.VNB;
+
+            string data = JsonConvert.SerializeObject(r);
             StringContent Content = new StringContent(data, Encoding.UTF8, "application/json");
             HttpResponseMessage response = client.PutAsync(baseAddress + "/Recipe/" + receipe.RId, Content).Result;
             if (response.IsSuccessStatusCode)

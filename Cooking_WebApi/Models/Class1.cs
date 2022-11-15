@@ -43,8 +43,8 @@ namespace Cooking_WebApi.Models
         public string Profession { get; set; }
         public string City { get; set; }
 
-        public ICollection<FeedBack> feedBacks { get; set; }
-        public ICollection<Comments> Comments { get; set; }
+        public  ICollection<FeedBack> feedBacks { get; set; }
+        public  ICollection<Comments> Comments { get; set; }
     }
 
     public partial class Receipe
@@ -59,7 +59,7 @@ namespace Cooking_WebApi.Models
         public string VNB { get; set; }
         public string State { get; set; }
 
-        public ICollection<Comments> Comments { get; set; }
+        public  ICollection<Comments> Comments { get; set; }
 
     }
 
@@ -73,7 +73,7 @@ namespace Cooking_WebApi.Models
 
         public int UserId { get; set; }
         [ForeignKey("UserId")]
-        public virtual Login logins { get; set; }
+        public Login logins { get; set; }
     }
 
     public class Logged
@@ -90,12 +90,14 @@ namespace Cooking_WebApi.Models
         public int CommentID { get; set; }
         public string Comment { get; set; }
         public DateTime DateofCreation { get; set; }
+        public string UserName { get; set; }
         public int UserId { get; set; }
         [ForeignKey("UserId")]
-        public virtual Login Logins { get; set; }
+        public Login Logins { get; set; }
+
         public int RId { get; set; }
         [ForeignKey("RId")]
-        public virtual Receipe Receipe { get; set; }
+        public Receipe Receipe { get; set; }
     }
 
     public class FoodReceipesEntities : DbContext
@@ -117,8 +119,8 @@ namespace Cooking_WebApi.Models
         protected override void Seed(FoodReceipesEntities context)
         {
             List<Admin> admins = new List<Admin>();
-            admins.Add(new Admin { Email = "admin@gmail.com", Password = "Admin@123" });
-            admins.Add(new Admin { Email = "abc@gmail.com", Password = "ABC@123" });
+            admins.Add(new Admin { Email = "admin@gmail.com",Username="Admin", Password = "Admin@123" });
+            admins.Add(new Admin { Email = "abc@gmail.com",Username="Abc", Password = "ABC@123" });
             context.Admins.AddRange(admins);
 
             context.SaveChanges();

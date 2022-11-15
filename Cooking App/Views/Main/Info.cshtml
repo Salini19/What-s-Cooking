@@ -10,7 +10,7 @@
     <link href="~/Content/Info.css" rel="stylesheet" />
 </head>
 <body>
-    @{Html.BeginForm("Info", "Main", FormMethod.Post);}
+    
     <div class="container-fluid" id="infol">
         <div class="row" style="margin:20px;">
             <label style="color: #283747"><h2>Recipe Name :- @ViewBag.RName (@ViewBag.Vnb - @ViewBag.State))</h2></label>
@@ -28,17 +28,7 @@
                             allowfullscreen>
                     </iframe>
                 </div>
-                <p id="line"></p>
-                <div class="row" style="margin:1px;margin-top:5px;">
-                    <h4 style="color:forestgreen;font-weight:600">Comments</h4>
 
-                    @foreach (Cooking_WebApi.Models.Comments feed in ViewBag.CList)
-                    {
-                        <label style="color:forestgreen;font-weight:600">@TempData["T1"]</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="15" readonly>@feed.Comment</textarea>
-                    }
-
-                </div>
             </div>
             <div class="col-md-7">
                 <div class="row" style="margin:10px;">
@@ -50,21 +40,37 @@
                     <label style="color: #1F618D"><h5>How to Make :-</h5></label>
                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="15" readonly>@ViewBag.Htm</textarea>
                 </div>
-                <p id="line"></p>
+
+            </div>
+
+
+        </div>
+    </div>
+    
+    @{Html.BeginForm("Info", "Main", FormMethod.Post);}
+    <div class="container-fluid" id="infol">
+        <div class="row" style="margin:20px;">
+
+            <div class="row" style="margin:1px;margin-top:5px;">
+                <h4 style="color:forestgreen;font-weight:600">Comments</h4>
+                <div>
+                    @foreach (Cooking_WebApi.Models.Comments feed in ViewBag.CList)
+                    {
+                        <label style="color:forestgreen;font-weight:600">@feed.UserName</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" readonly>@feed.Comment</textarea>
+                    }
+                </div>
+
                 <div class="row" style="margin:5px;">
                     <label style="color: #1F618D"><h5>Add Comment Here :-</h5></label>
-                    <textarea class="form-control" name="comment" id="comment" rows="15" required></textarea>
+                    <textarea class="form-control" name="comment" id="comment" rows="5" required></textarea>
                     <input type="submit" style="background:blue;color:white" id="regbtn" value="Send" class="btn" />
                 </div>
+
             </div>
-           
-                
         </div>
     </div>
     @{Html.EndForm();}
-   
-
-
 
 
 </body>

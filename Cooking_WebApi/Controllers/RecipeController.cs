@@ -39,7 +39,7 @@ namespace Cooking_WebApi.Controllers
         public void Put(int id, [FromBody] Receipe r)
         {
             Receipe r1 = food.Receipes.ToList().Find(x => x.RId == id);
-            r1.RId = r.RId;
+            r1.RId = id;
             r1.RName = r.RName;
             r1.VNB = r.VNB;
             r1.Youtube = r.Youtube;
