@@ -7,14 +7,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Security.Cryptography;
-using System.Security.Cryptography.Pkcs;
 using System.Text;
 using System.Web;
-using System.Web.Hosting;
 using System.Web.Mvc;
 using System.Web.Security;
-using static System.Web.Razor.Parser.SyntaxConstants;
 
 
 namespace Cooking_App.Controllers
@@ -27,12 +23,10 @@ namespace Cooking_App.Controllers
 
         HttpClient client;
         LoginMethods lmethods;
-        ReceipeMethods methods ;
         public MainController()
         {
             client = new HttpClient();
             client.BaseAddress = baseAddress;
-            methods = new ReceipeMethods();
             lmethods = new LoginMethods();
           
         }

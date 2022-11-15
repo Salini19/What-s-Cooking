@@ -1,6 +1,4 @@
-﻿using Cooking_App;
-using Cooking_App.Models;
-using Cooking_WebApi.Models;
+﻿using Cooking_WebApi.Models;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -15,6 +13,15 @@ namespace CookingApp.Test
     public class ReceipeTest
     {
         ReceipeMethods methods = new ReceipeMethods();
+
+        [TestCase("salini@gmail.com",ExpectedResult =true)]
+        [TestCase("lateesh@gmail.com",ExpectedResult =true)]
+        [TestCase("admin@gmail.com",ExpectedResult =false)]
+        public bool UserCheck(string email)
+        {
+           return methods.UserExists(email);
+        }
+
 
 
         [TestCase(11,ExpectedResult =false)]
@@ -59,6 +66,7 @@ namespace CookingApp.Test
 
             Assert.AreEqual(true, ans);
         }
+
         [TestCase]
         public void DeleteRecipe()
         {

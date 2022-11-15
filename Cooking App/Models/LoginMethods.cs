@@ -106,7 +106,7 @@ namespace Cooking_App
             return res;        
            
         }
-
+        //taking the details from logged table //login user details
         public Logged TempName()
         {
           
@@ -128,13 +128,6 @@ namespace Cooking_App
             food.Loggeds.RemoveRange(food.Loggeds);
             food.SaveChanges();
         }
-
-        //public Login GetInfoProfile(int id)
-        //{
-        //    var List = food.Logins.ToList();
-        //    Login l = List.Find(x => x.Id == id);
-        //    return l;
-        //}
        
     }
 

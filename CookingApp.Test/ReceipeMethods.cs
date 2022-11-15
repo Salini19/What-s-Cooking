@@ -1,5 +1,4 @@
-﻿using Cooking_App.Models;
-using Cooking_WebApi.Models;
+﻿using Cooking_WebApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -10,12 +9,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace Cooking_App
+namespace CookingApp.Test
 {
     public class ReceipeMethods
     {
         FoodReceipesEntities food = new FoodReceipesEntities();
-        //For Nnit Testing
+        //For Nunit Testing
+
+        public bool UserExists(string email)
+        {
+           var list= food.Logins.ToList();
+           return list.Any(x => x.Email == email);
+        }
+
 
         public bool Insert(Receipe m)
         {
