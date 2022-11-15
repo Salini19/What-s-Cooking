@@ -191,18 +191,21 @@ namespace Cooking_App.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-                Receipe receipe = new Receipe();
+                Receipe m = new Receipe();
                 HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/Recipe/" + id).Result;
                 if (response.IsSuccessStatusCode)
                 {
                     String Data = response.Content.ReadAsStringAsync().Result;
-                    receipe = JsonConvert.DeserializeObject<Receipe>(Data);
+                    m = JsonConvert.DeserializeObject<Receipe>(Data);
                 }
-                if (receipe == null)
+                if (m == null)
                 {
                     return HttpNotFound();
                 }
-                return View(receipe);
+
+                TempData["Photo"] = m.Photo;
+                      // HTM = How To Make
+                return View(m);
             }
             return View();
 
@@ -214,39 +217,65 @@ namespace Cooking_App.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Receipe receipe)
+        public ActionResult Edit(Receipe receipe,HttpPostedFileBase ImageFile)
         {
-            //string FileName = Path.GetFileNameWithoutExtension(receipe.ImageFile.FileName);
-
-            //string FileExtension = Path.GetExtension(receipe.ImageFile.FileName);
-
-            //FileName = FileName + DateTime.Now.ToString("yymmssfff") + FileExtension;
-            //receipe.Photo = "../RecipeImg/" + FileName;
-            //FileName = Path.Combine(Server.MapPath("../RecipeImg/"), FileName);
-
-
-            //receipe.ImageFile.SaveAs(FileName);
-
-            Receipe r = new Receipe();
-            r.RName = receipe.RName;
-            r.Photo = "../RecipeImg/" + receipe.Photo;
-            string youtube = receipe.Youtube;
-            youtube = youtube.Replace("watch?v=", "embed/");
-            r.Youtube = youtube;
-            r.HTM = receipe.HTM;
-            r.Ingredient = receipe.Ingredient;
-            r.State = receipe.State;
-            r.VNB = receipe.VNB;
-
-            string data = JsonConvert.SerializeObject(r);
-            StringContent Content = new StringContent(data, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = client.PutAsync(baseAddress + "/Recipe/" + receipe.RId, Content).Result;
-            if (response.IsSuccessStatusCode)
+            if (ImageFile != null)
             {
-                return RedirectToAction("Index");
-            }
+                string FileName = Path.GetFileNameWithoutExtension(ImageFile.FileName);
 
-            return View(receipe);
+                string FileExtension = Path.GetExtension(ImageFile.FileName);
+                FileName = FileName + DateTime.Now.ToString("yymmssfff") + FileExtension;
+                receipe.Photo = "../RecipeImg/" + FileName;
+                FileName = Path.Combine(Server.MapPath("../RecipeImg/"), receipe.Photo);
+
+
+                ImageFile.SaveAs(FileName);
+
+                Receipe r = new Receipe();
+                r.RName = receipe.RName;
+                r.Photo = receipe.Photo;
+                string youtube = receipe.Youtube;
+                youtube = youtube.Replace("watch?v=", "embed/");
+                r.Youtube = youtube;
+                r.HTM = receipe.HTM;
+                r.Ingredient = receipe.Ingredient;
+                r.State = receipe.State;
+                r.VNB = receipe.VNB;
+
+                string data = JsonConvert.SerializeObject(r);
+                StringContent Content = new StringContent(data, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = client.PutAsync(baseAddress + "/Recipe/" + receipe.RId, Content).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index");
+                }
+
+                return View(receipe);
+            }
+            else
+            {
+                Receipe r = new Receipe();
+                r.RName = receipe.RName;
+                r.Photo = TempData["Photo"].ToString();
+                string youtube = receipe.Youtube;
+                youtube = youtube.Replace("watch?v=", "embed/");
+                r.Youtube = youtube;
+                r.HTM = receipe.HTM;
+                r.Ingredient = receipe.Ingredient;
+                r.State = receipe.State;
+                r.VNB = receipe.VNB;
+
+                string data = JsonConvert.SerializeObject(r);
+                StringContent Content = new StringContent(data, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = client.PutAsync(baseAddress + "/Recipe/" + receipe.RId, Content).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index");
+                }
+
+                return View(receipe);
+            }
+            
         }
 
 

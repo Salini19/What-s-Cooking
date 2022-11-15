@@ -24,7 +24,7 @@ namespace CookingApp.Test
 
 
 
-        [TestCase(11,ExpectedResult =false)]
+        [TestCase(11,ExpectedResult =true)]
         [TestCase(17,ExpectedResult =true)]
         public bool CheckRecipeExist(int id)
         {
