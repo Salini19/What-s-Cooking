@@ -20,7 +20,7 @@ namespace Cooking_WebApi.Controllers
         // GET api/<controller>/5
         public Login Get(int id)
         {
-            return food.Logins.ToList().Find(x => x.Id == id);
+            return food.Logins.ToList().Find(x => x.UserId == id);
         }
 
         // POST api/<controller>
@@ -33,8 +33,8 @@ namespace Cooking_WebApi.Controllers
         // PUT api/<controller>/5
         public void Put(int id, [FromBody] Login l1)
         {
-            Login l = food.Logins.ToList().Find(x => x.Id == id);
-            l.Id = id;
+            Login l = food.Logins.ToList().Find(x => x.UserId == id);
+            l.UserId = id;
             l.UserName = l1.UserName;
             l.Email = l1.Email;
             l.DOB = l1.DOB;
@@ -51,7 +51,7 @@ namespace Cooking_WebApi.Controllers
         // DELETE api/<controller>/5
         public void Delete(int id)
         {
-            Login l = food.Logins.ToList().Find(x => x.Id == id);
+            Login l = food.Logins.ToList().Find(x => x.UserId == id);
             food.Logins.Remove(l);
             food.SaveChanges();
         }

@@ -1,8 +1,4 @@
 ﻿
-
-
-
-
 <!DOCTYPE html>
 
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
@@ -137,7 +133,7 @@
                     <div class="col-md-4">
                         <h6 style="color:green;font-weight:600;">People's Feedback</h6>
                     </div>
-                    @*@foreach (Whats_Cooking.Models.Feedback feed in ViewBag.FeedList)*@
+                   
                     @foreach (Cooking_WebApi.Models.FeedBack feed in ViewBag.FeedList)
                     {
                         <table class="table table-borderless" style="border-bottom:1px dashed black">
@@ -209,6 +205,12 @@
     </footer>
     @{Html.EndForm();}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+
+    @if (ViewBag.Error != null)
+    {
+        <script type="text/javascript">alert("You are not a User..Pleases Register your Account");</script>
+    }
+
 
 </body>
 </html>

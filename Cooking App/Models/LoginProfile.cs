@@ -20,6 +20,7 @@ namespace Cooking_App.Models
         [MaxLength(10,ErrorMessage ="Invalid Mobile Number")]
         public string MobileNumber { get; set; }
         [Required]
+        [EmailAddress]
         public string Email { get; set; }
         [Required]
         [DataType(DataType.Password)]

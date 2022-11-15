@@ -43,7 +43,7 @@ namespace CookingApp.Test
             r.Youtube = "https://www.youtube.com/embed/6No7g2GptXY";
             r.Ingredient = "Chicken,Tomato,Ginger";
             r.HTM = "Follow the steps in Youtube Link";
-            r.Photo = "../RecipeImg/33b35bac-5c13-4f2c-b388-956dad317166_CardU2.jpg";
+            r.Photo = "../RecipeImg/dbc01052-2005-462d-adca-e02d34e225bb_Card2";
 
            bool ans= methods.Insert(r);
             Assert.AreEqual(true, ans);
@@ -60,7 +60,7 @@ namespace CookingApp.Test
             r.Youtube = "https://www.youtube.com/embed/6No7g2GptXY";
             r.Ingredient = "Chicken,Tomato,Ginger";
             r.HTM = "Follow the steps in Youtube Link";
-            r.Photo = "../RecipeImg/33b35bac-5c13-4f2c-b388-956dad317166_CardU2.jpg";
+            r.Photo = "../RecipeImg/dbc01052-2005-462d-adca-e02d34e225bb_Card2";
 
             bool ans = methods.Update(r);
 

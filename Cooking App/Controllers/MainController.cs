@@ -79,16 +79,43 @@ namespace Cooking_App.Controllers
         {          
             try
             {
+                TempData["M1"] = "MainPage";
                 FeedBack f = new FeedBack();
                 f.Name = name;
                 f.Email = email;
                 f.Msg = msg;
 
-                string data = JsonConvert.SerializeObject(f);
 
-                StringContent content= new StringContent(data, Encoding.UTF8, "application/json");
-                HttpResponseMessage response=client.PostAsync(client.BaseAddress + "/Feedback", content).Result;
+                List<Login> list = new List<Login>();
+                HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/User").Result;
                 if (response.IsSuccessStatusCode)
+                {
+                    String Data = response.Content.ReadAsStringAsync().Result;
+                    list = JsonConvert.DeserializeObject<List<Login>>(Data);
+                }
+                bool ans = list.Any(x => x.Email == f.Email);
+                if (ans)
+                {
+                    string data = JsonConvert.SerializeObject(f);
+
+                    StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+                    HttpResponseMessage response1 = client.PostAsync(client.BaseAddress + "/Feedback", content).Result;
+                    if (response1.IsSuccessStatusCode)
+                    {
+                        List<FeedBack> flist = new List<FeedBack>();
+                        HttpResponseMessage response2 = client.GetAsync(client.BaseAddress + "/Feedback").Result;
+                        if (response2.IsSuccessStatusCode)
+                        {
+                            String Data = response2.Content.ReadAsStringAsync().Result;
+                            flist = JsonConvert.DeserializeObject<List<FeedBack>>(Data);
+                        }
+                        ViewBag.FeedList = flist.Take(3);
+                        return View();
+                    }
+
+                }
+
+                else
                 {
                     List<FeedBack> flist = new List<FeedBack>();
                     HttpResponseMessage response2 = client.GetAsync(client.BaseAddress + "/Feedback").Result;
@@ -98,6 +125,8 @@ namespace Cooking_App.Controllers
                         flist = JsonConvert.DeserializeObject<List<FeedBack>>(Data);
                     }
                     ViewBag.FeedList = flist.Take(3);
+                 
+                    ViewBag.Error = "Yor are Not a User";
                     return View();
                 }
                 return View();
@@ -243,7 +272,7 @@ namespace Cooking_App.Controllers
 
                 string data = JsonConvert.SerializeObject(u);
                 StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
-                HttpResponseMessage response1 = client.PutAsync(baseAddress + "/User/" + u.Id, content).Result;
+                HttpResponseMessage response1 = client.PutAsync(baseAddress + "/User/" + u.UserId, content).Result;
                 if (response1.IsSuccessStatusCode)
                 {
                     ViewBag.Msg1 = "Password Changed Sucessfully";
@@ -275,7 +304,7 @@ namespace Cooking_App.Controllers
             Logged l = lmethods.TempName();
             u = lmethods.GetName(l.Name, l.Password);
             TempData["T1"] = u.UserName;
-            int id = u.Id;
+            int id = u.UserId;
 
             Login p = new Login();
 
@@ -294,7 +323,7 @@ namespace Cooking_App.Controllers
 
             string data = JsonConvert.SerializeObject(l);
             StringContent Content = new StringContent(data, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = client.PutAsync(baseAddress + "/User/" + l.Id, Content).Result;
+            HttpResponseMessage response = client.PutAsync(baseAddress + "/User/" + l.UserId, Content).Result;
             if (response.IsSuccessStatusCode)
             {
                 ViewBag.profile = "Profile Updated Successfully";
@@ -329,7 +358,7 @@ namespace Cooking_App.Controllers
             Logged l = lmethods.TempName();
             u = lmethods.GetName(l.Name, l.Password);
             TempData["T1"] = u.UserName;
-            ViewBag.Id = u.Id;
+            ViewBag.Id = u.UserId;
             lmethods.Temporaryvnb(l.Name, id);
 
             try
@@ -371,7 +400,7 @@ namespace Cooking_App.Controllers
             TempData["sname"] = l.Sname;
 
             Receipe m = new Receipe();
-            ViewBag.Id = u.Id;
+            ViewBag.Id = u.UserId;
             ViewBag.Image = m.Photo;
             ViewBag.Vnb = l.Vnb;
 
@@ -406,20 +435,74 @@ namespace Cooking_App.Controllers
             Logged l = lmethods.TempName();
             u = lmethods.GetName(l.Name, l.Password);
             TempData["T1"] = u.UserName;
-
-            Receipe m = new Receipe();
-            HttpResponseMessage response1 = client.GetAsync(client.BaseAddress + "/Recipe/"+id).Result;
-            if (response1.IsSuccessStatusCode)
+            ViewBag.uid = u.UserId;
+            
+            if (TempData["T1"] !=null)
             {
-                String Data = response1.Content.ReadAsStringAsync().Result;
-                m = JsonConvert.DeserializeObject<Receipe>(Data);
+                Receipe m = new Receipe();
+                HttpResponseMessage response1 = client.GetAsync(client.BaseAddress + "/Recipe/" + id).Result;
+                if (response1.IsSuccessStatusCode)
+                {
+                    String Data = response1.Content.ReadAsStringAsync().Result;
+                    m = JsonConvert.DeserializeObject<Receipe>(Data);
+                    ViewBag.Reid = m.RId;
+                    ViewBag.Rname = m.RName;    //RName = Recipe Name
+                    ViewBag.Vnb = m.VNB;        //VNB = Veg Non-Veg Beverage
+                    ViewBag.State = m.State;
+                    ViewBag.Photo = m.Photo;
+                    ViewBag.Youtube = m.Youtube;
+                    ViewBag.Ingredient = m.Ingredient;
+                    ViewBag.Htm = m.HTM;
+                }
+                
+                List<Comments> list = new List<Comments>();
+                HttpResponseMessage response2 = client.GetAsync(client.BaseAddress + "/Comment").Result;
+                if (response1.IsSuccessStatusCode)
+                {
+                    String Data = response2.Content.ReadAsStringAsync().Result;
+                    list = JsonConvert.DeserializeObject<List<Comments>>(Data);
+                    ViewBag.CList = list;                
+                }
+                Comments c1 = new Comments();
+                c1.UserId= u.UserId;
+                c1.RId = m.RId;
+                return View(c1);
             }
 
-            ViewBag.Vnb = m.VNB;        
-              
-            return View(m);
+            return View();
+
         }
-        //===============================================================================================
+
+        [HttpPost]
+        public ActionResult Info(Comments comments)
+        {
+            Comments c = new Comments();
+            c.RId = comments.RId;
+            c.UserId = comments.UserId;
+            c.Comment = comments.Comment;
+            c.DateofCreation = DateTime.Now;
+
+            string data = JsonConvert.SerializeObject(c);
+
+            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = client.PostAsync(client.BaseAddress + "/Comment", content).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                List<Comments> list = new List<Comments>();
+                HttpResponseMessage response1 = client.GetAsync(client.BaseAddress + "/Comment" ).Result;
+                if (response1.IsSuccessStatusCode)
+                {
+                    String Data = response1.Content.ReadAsStringAsync().Result;
+                    list = JsonConvert.DeserializeObject<List<Comments>>(Data);
+                    return View(list);
+                }
+
+            }
+                return View();
+        }
+
+
+        //================================================================================================
 
         //Beverage
         
@@ -429,7 +512,7 @@ namespace Cooking_App.Controllers
             Logged l = lmethods.TempName();
             u = lmethods.GetName(l.Name, l.Password);
             TempData["T1"] = u.UserName;
-            ViewBag.Id = u.Id;
+            ViewBag.Id = u.UserId;
             lmethods.Temporaryvnb(l.Name, id);
 
             try

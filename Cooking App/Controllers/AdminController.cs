@@ -57,7 +57,7 @@ namespace Cooking_App.Controllers
             if (ans)
             {            
                 TempData["A1"] = u.Username;
-                lmethods.Temporary(u.Username, u.Password);
+                lmethods.Temporary(u.Email, u.Password);
                 TempData["sucess"] = "success";
                 return RedirectToAction("Index");
             }
@@ -216,8 +216,7 @@ namespace Cooking_App.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "RId,RName,Photo,Youtube,Ingredient,HTM,VNB,State")] Receipe receipe)
         {
-
-
+            
             string data = JsonConvert.SerializeObject(receipe);
             StringContent Content = new StringContent(data, Encoding.UTF8, "application/json");
             HttpResponseMessage response = client.PutAsync(baseAddress + "/Recipe/" + receipe.RId, Content).Result;
