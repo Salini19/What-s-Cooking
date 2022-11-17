@@ -104,25 +104,38 @@ namespace Cooking_App.Controllers
             TempData["A1"] = l.Name;
             if (TempData["A1"] != null)
             {
-                if (id == null)
+                Receipe m = new Receipe();
+                HttpResponseMessage response1 = client.GetAsync(client.BaseAddress + "/Recipe/" + id).Result;
+                if (response1.IsSuccessStatusCode)
                 {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    String Data = response1.Content.ReadAsStringAsync().Result;
+                    m = JsonConvert.DeserializeObject<Receipe>(Data);
+                    ViewBag.Rid = m.RId;
+                    ViewBag.Rname = m.RName;    //RName = Recipe Name
+                    ViewBag.Vnb = m.VNB;        //VNB = Veg Non-Veg Beverage
+                    ViewBag.State = m.State;
+                    ViewBag.Photo = m.Photo;
+                    ViewBag.Youtube = m.Youtube;
+                    ViewBag.Ingredient = m.Ingredient;
+                    ViewBag.Htm = m.HTM;
                 }
-                Receipe receipe = new Receipe();
-                HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/Recipe/" + id).Result;
-                if (response.IsSuccessStatusCode)
+
+                List<Comments> list = new List<Comments>();
+                HttpResponseMessage response2 = client.GetAsync(client.BaseAddress + "/Comment").Result;
+                if (response1.IsSuccessStatusCode)
                 {
-                    String Data = response.Content.ReadAsStringAsync().Result;
-                    receipe = JsonConvert.DeserializeObject<Receipe>(Data);
+                    String Data = response2.Content.ReadAsStringAsync().Result;
+                    list = JsonConvert.DeserializeObject<List<Comments>>(Data);
+
+                    List<Comments> clist = list.Where(x => x.RId == m.RId).ToList();
+                    ViewBag.CList = clist;
                 }
-                if (receipe == null)
-                {
-                    return HttpNotFound();
-                }
-                return View(receipe);
+
+                return View();
+             
             }
             return View();
-          
+
         }
 
         // GET: Admin/Create
@@ -226,8 +239,8 @@ namespace Cooking_App.Controllers
                 string FileExtension = Path.GetExtension(ImageFile.FileName);
                 FileName = FileName + DateTime.Now.ToString("yymmssfff") + FileExtension;
                 receipe.Photo = "../RecipeImg/" + FileName;
-                FileName = Path.Combine(Server.MapPath("../RecipeImg/"), receipe.Photo);
-
+                FileName = Path.Combine("E:\\Repos\\What's Cooking\\Cooking App\\RecipeImg\\", FileName);
+        
 
                 ImageFile.SaveAs(FileName);
 

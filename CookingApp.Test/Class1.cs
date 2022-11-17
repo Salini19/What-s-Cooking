@@ -53,7 +53,7 @@ namespace CookingApp.Test
         public void UpdateRecipe()
         {
             Receipe r = new Receipe();
-            r.RId = 21;
+            r.RId = 22;
             r.RName = "Chicken Tikka";
             r.VNB = "Non Veg";
             r.State = "TamilNadu";
@@ -70,7 +70,7 @@ namespace CookingApp.Test
         [TestCase]
         public void DeleteRecipe()
         {
-           bool ans= methods.Delete(21);
+           bool ans= methods.Delete(22);
            Assert.AreEqual(true, ans);
         }
 

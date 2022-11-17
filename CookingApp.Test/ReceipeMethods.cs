@@ -61,6 +61,7 @@ namespace CookingApp.Test
                 Receipe receipe = list.Find(x => x.RId == id);
 
                 food.Receipes.Remove(receipe);
+                food.SaveChanges();
                 return true;
             }
             catch (Exception)

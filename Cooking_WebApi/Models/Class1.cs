@@ -10,7 +10,6 @@ using System.Web.UI;
 
 namespace Cooking_WebApi.Models
 {
-
     public class Admin
     {
         [Key]

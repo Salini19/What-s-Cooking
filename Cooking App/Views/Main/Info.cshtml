@@ -57,6 +57,7 @@
                     @foreach (Cooking_WebApi.Models.Comments feed in ViewBag.CList)
                     {
                         <label style="color:forestgreen;font-weight:600">@feed.UserName</label>
+                        <label>@feed.DateofCreation</label>
                         <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" readonly>@feed.Comment</textarea>
                     }
                 </div>
