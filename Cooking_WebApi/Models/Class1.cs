@@ -20,7 +20,6 @@ namespace Cooking_WebApi.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
     }
-
     public class Login
     {
         [Key]

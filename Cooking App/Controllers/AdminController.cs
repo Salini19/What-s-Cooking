@@ -188,9 +188,7 @@ namespace Cooking_App.Controllers
             else
             {
                 return View();
-            }
-      
-           
+            }           
         }
 
         // GET: Admin/Edit/5
@@ -287,11 +285,8 @@ namespace Cooking_App.Controllers
                 }
 
                 return View(receipe);
-            }
-            
+            }            
         }
-
-
 
         // GET: Admin/Delete/5
         public ActionResult Delete(int? id)
@@ -320,11 +315,5 @@ namespace Cooking_App.Controllers
             return View(rlist);
 
         }
-
-
-      
-
-
-
     }
 }
